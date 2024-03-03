@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 17.8.34511.84
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsepNet", "Library\JsepNet.csproj", "{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{23F84774-9D68-4F49-9F4D-88C021D79F1F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsepNet.Plugins", "Plugins\JsepNet.Plugins.csproj", "{FF602121-4918-40A8-BD69-900D1096358B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsepNet.Tests", "Tests\JsepNet.Tests.csproj", "{DB187929-1670-4C3A-B54D-B8F502FBB233}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsepNet.Plugins.Tests", "Plugins.Tests\JsepNet.Plugins.Tests.csproj", "{25CAE19D-BA52-4106-A3F0-A7154ACCE3FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6} = {DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}
+		{FF602121-4918-40A8-BD69-900D1096358B} = {FF602121-4918-40A8-BD69-900D1096358B}
+	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "JsepNet.Tests.Generate", "Tests.Generate\JsepNet.Tests.Generate.esproj", "{A2064288-E724-4B4D-85B9-044573D08B75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEDE8DE2-8C8A-463B-883E-D8336D8D47F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F84774-9D68-4F49-9F4D-88C021D79F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F84774-9D68-4F49-9F4D-88C021D79F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F84774-9D68-4F49-9F4D-88C021D79F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F84774-9D68-4F49-9F4D-88C021D79F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF602121-4918-40A8-BD69-900D1096358B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF602121-4918-40A8-BD69-900D1096358B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF602121-4918-40A8-BD69-900D1096358B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF602121-4918-40A8-BD69-900D1096358B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB187929-1670-4C3A-B54D-B8F502FBB233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB187929-1670-4C3A-B54D-B8F502FBB233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB187929-1670-4C3A-B54D-B8F502FBB233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB187929-1670-4C3A-B54D-B8F502FBB233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CAE19D-BA52-4106-A3F0-A7154ACCE3FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CAE19D-BA52-4106-A3F0-A7154ACCE3FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CAE19D-BA52-4106-A3F0-A7154ACCE3FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CAE19D-BA52-4106-A3F0-A7154ACCE3FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2064288-E724-4B4D-85B9-044573D08B75}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38AB4E52-6ACA-4915-AB4C-3607F5C9DB8F}
+	EndGlobalSection
+EndGlobal

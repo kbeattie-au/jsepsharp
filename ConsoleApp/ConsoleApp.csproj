@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>JsepNet.Console</Title>
+    <Description>A Jsep.Net console application for testing various expressions.</Description>
+    <Copyright>Abbott-Unlimited LLC© 2024</Copyright>
+    <RepositoryType>git</RepositoryType>
+	<DebugType>portable</DebugType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library\JsepNet.csproj" />
+    <ProjectReference Include="..\Plugins\JsepNet.Plugins.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,8 +1,59 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>JsepSharp</title>
-    </head>
-    <body>
-        <p>This is a work in progress.</p>
-    </body>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JsepSharp Parser Loading&hellip;</title>
+    <base href="/jsepsharp/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link href="JsepSharp.Demo.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        <br />
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-danger">Something Went Wrong</h4>
+            <p class="mb-0">
+                The demo could not be loaded, because Blazor failed to load or initialize properly.
+            </p>
+        </div>
+        <div class="alert alert-info" role="alert">
+            This parsing library does not require the use of Blazor,
+            it is just being used for the demo purposes since it does
+            not require the use of server-side execution.
+        </div>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <footer>
+        <div id="footer" style="display: none">
+            Running Version <span id="ver"></span> of JsepSharp via
+            <a href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor">Blazor</a>.
+        </div>
+    </footer>
+
+    <script>
+        function setVersion(ver) {
+            var fe = document.getElementById('footer');
+            fe.style.display = 'block';
+
+            var ve = document.getElementById('ver');
+            ve.textContent = ver;
+        }
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
 </html>

@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an spread expression.
+    /// </summary>
     public sealed class SpreadNode : SyntaxNode
     {
         const string TYPE_NAME = "SpreadElement";
@@ -19,6 +22,9 @@ namespace JsepSharp.Plugins.SyntaxTree
             Argument = argument;
         }
 
+        /// <summary>
+        /// The target of the spread.
+        /// </summary>
         public SyntaxNode? Argument { get; set; }
 
         /// <inheritdoc />
@@ -39,16 +45,23 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same argument as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(SpreadNode node)
         {
             return Equals(Argument, node.Argument);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Argument?.GetHashCode() ?? 0;

@@ -3,6 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an tagged template literal.
+    /// </summary>
+    /// <remarks>
+    /// e.g.
+    ///   <c>tag`1${a}2${c}3`</c>
+    /// </remarks>
     public sealed class TaggedTemplateNode : SyntaxNode
     {
         const string TYPE_NAME = "TaggedTemplateExpression";
@@ -20,13 +27,20 @@ namespace JsepSharp.Plugins.SyntaxTree
             Quasi = quasi;
         }
 
+        /// <summary>
+        /// This is the tag before the template literal.
+        /// </summary>
         public SyntaxNode? Tag { get; set; }
+
+        /// <summary>
+        /// This represents the rest of the template literal.
+        /// </summary>
         public TemplateLiteralNode? Quasi { get; set; }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)
         {
-            // TODO: Skipping quasi. Is that OK when this plugin is implemented?
+            // Note: Skips Quasi property by design. Replacement not currently permitted.
             if (searcher(Tag, out var outTag))
             {
                 Tag = outTag;
@@ -44,17 +58,24 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same tag and quasi as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(TaggedTemplateNode node)
         {
             return Equals(Tag, node.Tag) &&
                    Equals(Quasi, node.Quasi);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return HashCode.Combine(Tag, Quasi);

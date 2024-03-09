@@ -2,6 +2,11 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an compound expression.<br />
+    /// e.g.
+    ///   <c>a, b, c</c>
+    /// </summary>
     public sealed class CompoundNode : SyntaxNode
     {
         const string TYPE_NAME = "Compound";
@@ -29,6 +34,9 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// Zero or more nodes that make up the compound.
+        /// </summary>
         public List<SyntaxNode?> Body { get; set; }
 
         /// <inheritdoc />

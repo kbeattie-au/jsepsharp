@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an binary operation.
+    /// </summary>
     public sealed class BinaryNode : SyntaxNode, IHasOperator
     {
         const string TYPE_NAME = "BinaryExpression";
@@ -20,8 +23,17 @@ namespace JsepSharp.SyntaxTree
             Right = right;
         }
 
+        /// <inheritdoc />
         public string? Operator { get; set; }
+
+        /// <summary>
+        /// Left-hand side of the operation.
+        /// </summary>
         public SyntaxNode? Left { get; set; }
+
+        /// <summary>
+        /// Right-hand side of the operation.
+        /// </summary>
         public SyntaxNode? Right { get; set; }
 
         /// <inheritdoc />

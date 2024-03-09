@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents a this statement.
+    /// </summary>
     public sealed class ThisNode : SyntaxNode
     {
         const string TYPE_NAME = "ThisExpression";

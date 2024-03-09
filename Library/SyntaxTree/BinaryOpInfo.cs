@@ -2,6 +2,13 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// This is used during parsing while using a stack to create the correct
+    /// order of operations for binary operators. It should never be returned from the library.
+    /// </summary>
+    /// <param name="value">Operator.</param>
+    /// <param name="prec">Precedence.</param>
+    /// <param name="rightAssoc">Right associative?</param>
     internal sealed class BinaryOpInfo(string value, double prec, bool rightAssoc) : SyntaxNode()
     {
         const string TYPE_NAME = "BinaryOpInfo";
@@ -11,10 +18,19 @@ namespace JsepSharp.SyntaxTree
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Operator name.
+        /// </summary>
         public string Value { get; set; } = value;
 
+        /// <summary>
+        /// Precedence of operator.
+        /// </summary>
         public double Precision { get; set; } = prec;
 
+        /// <summary>
+        /// Whether operator is right-associative.
+        /// </summary>
         public bool RightAssociative { get; set; } = rightAssoc;
 
         /// <inheritdoc />
@@ -29,7 +45,7 @@ namespace JsepSharp.SyntaxTree
             sb.Start("OpInfo");
             sb.EscapedText(Value);
             sb.Delim();
-            sb.Append(Precision);
+            sb.Number(Precision);
             sb.Delim();
             sb.Bool(RightAssociative);
             sb.End();

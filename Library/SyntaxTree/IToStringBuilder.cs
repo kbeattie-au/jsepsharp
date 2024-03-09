@@ -1,7 +1,8 @@
 ﻿namespace JsepSharp.SyntaxTree
 {
     /// <summary>
-    /// Supports buffered builder for instance to string conversion.
+    /// Describes implementations that support a buffered builder 
+    /// for instance to string conversion.
     /// </summary>
     public interface IToStringBuilder
     {

@@ -2,6 +2,12 @@
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// AST builder shortcut methods. Can be used to shorten the code required for manually building an AST.
+    /// </summary>
+    /// <remarks>
+    /// Useful for unit tests, but has other potential uses.
+    /// </remarks>
     public class AstBuilderWithPlugins : AstBuilder
     {
         protected static ArrowNode Arrow(List<SyntaxNode?> parms, SyntaxNode? body)

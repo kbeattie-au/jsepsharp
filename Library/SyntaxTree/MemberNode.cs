@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents a member access expression.
+    /// </summary>
     public sealed class MemberNode : SyntaxNode
     {
         const string TYPE_NAME = "MemberExpression";
@@ -39,8 +42,19 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// Whether the property is accessed by brackets (as opposed to dot convention).
+        /// </summary>
         public bool Computed { get; set; }
+
+        /// <summary>
+        /// Node containing the member being accessed.
+        /// </summary>
         public SyntaxNode? Object { get; set; }
+
+        /// <summary>
+        /// The member being accessed.
+        /// </summary>
         public SyntaxNode? Property { get; set; }
 
         public bool ShouldSerializeComputed()

@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an unary operation.
+    /// </summary>
     public sealed class UnaryNode : SyntaxNode, IHasOperator
     {
         const string TYPE_NAME = "UnaryExpression";
@@ -20,8 +23,17 @@ namespace JsepSharp.SyntaxTree
             Prefix = prefix;
         }
 
+        /// <inheritdoc />
         public string? Operator { get; set; }
+
+        /// <summary>
+        /// The node the operator applies to.
+        /// </summary>
         public SyntaxNode? Argument { get; set; }
+
+        /// <summary>
+        /// Whether it is a prefix or postfix operation.
+        /// </summary>
         public bool Prefix { get; set; }
 
         /// <inheritdoc />

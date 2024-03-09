@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an object with zero or more properties.
+    /// </summary>
     public sealed class ObjectNode : SyntaxNode
     {
         const string TYPE_NAME = "ObjectExpression";
@@ -22,6 +25,9 @@ namespace JsepSharp.Plugins.SyntaxTree
             Properties = properties;
         }
 
+        /// <summary>
+        /// List of properties for the object.
+        /// </summary>
         public List<SyntaxNode?> Properties { get; set; }
 
         /// <inheritdoc />
@@ -46,16 +52,23 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same properties as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(ObjectNode node)
         {
             return SequenceEquals(Properties, node.Properties);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Properties?.GetHashCode() ?? 0;

@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents a literal constant value.
+    /// </summary>
     public sealed class LiteralNode : SyntaxNode
     {
         const string TYPE_NAME = "Literal";
@@ -66,13 +69,16 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
-        private object? _val;
+        object? _val;
+
+        /// <summary>Parsed literal value.</summary>
         public object? Value
         {
             get => _val;
             set => _val = NumberToDouble(value);
         }
 
+        /// <summary>Raw representation of literal value before parsing.</summary>
         public string? Raw { get; set; }
 
         /// <inheritdoc />

@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an assignment expression.
+    /// </summary>
     public sealed class AssignmentNode : SyntaxNode
     {
         const string TYPE_NAME = "AssignmentExpression";
@@ -21,8 +24,19 @@ namespace JsepSharp.Plugins.SyntaxTree
             Right = right;
         }
 
+        /// <summary>
+        /// Operator being used for assignment.
+        /// </summary>
         public string? Operator { get; set; }
+
+        /// <summary>
+        /// The target of assignment.
+        /// </summary>
         public SyntaxNode? Left { get; set; }
+
+        /// <summary>
+        /// The expression to assign to the target.
+        /// </summary>
         public SyntaxNode? Right { get; set; }
 
         /// <inheritdoc />
@@ -53,11 +67,17 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same values as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(AssignmentNode node)
         {
             return Operator == node.Operator &&
@@ -65,6 +85,7 @@ namespace JsepSharp.Plugins.SyntaxTree
                    Equals(Right, node.Right);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return HashCode.Combine(Operator, Left, Right);

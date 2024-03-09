@@ -1,6 +1,7 @@
 ﻿using JsepSharp.Extensions;
 using JsepSharp.SyntaxTree;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 
@@ -21,9 +22,15 @@ namespace JsepSharp
             Plugins = plugins.AsReadOnly();
         }
 
+        /// <summary>
+        /// Version of the library.
+        /// </summary>
         public static string Version { get; } = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
         // Port: static toString()
+        /// <summary>
+        /// Name of the library.
+        /// </summary>
         public static string Name { get; } = $"JavaScript Expression Parser (JSEP.NET) v{Version}";
 
         // Kept these since it makes it easier to map to the original JavaScript source.
@@ -60,15 +67,19 @@ namespace JsepSharp
         // Unique to C# implementation. Node identifiers/names lookups.
         static int freeId = 1;
         static readonly Dictionary<Type, int> nodeTypesByTypeId = [];
+        /// <summary>A readonly dictionary of node types and type identifiers.</summary>
         public static ReadOnlyDictionary<Type, int> NodeTypesByTypeId { get; } = nodeTypesByTypeId.AsReadOnly();
 
         static readonly Dictionary<int, string> nodeNamesByTypeIds = [];
+        /// <summary>A readonly dictionary of type identifiers and names.</summary>
         public static ReadOnlyDictionary<int, string> NodeNamesByTypeIds { get; } = nodeNamesByTypeIds.AsReadOnly();
 
         static readonly Dictionary<string, Type> nodeTypesByStrings = [];
+        /// <summary>A readonly dictionary of names and node types.</summary>
         public static ReadOnlyDictionary<string, Type> NodeTypesByStrings { get; } = nodeTypesByStrings.AsReadOnly();
 
-        private static bool classInitialized = false;
+        // Tracks if class has performed static initialization.
+        static bool classInitialized = false;
 
         /// <summary>
         /// Initializes static members. Necessary for deserialization before parsing to function properly.
@@ -104,6 +115,8 @@ namespace JsepSharp
             { "+", 1 }
         };
         static Dictionary<string, double> unaryOps = new(unaryOpsDefault);
+        /// <summary>A readonly dictionary of unary operators. The value portion is currently ignored, since these do not have precedence.</summary>
+        /// <remarks>Kept unused value portion to retain similarity with the JavaScript version.</remarks>
         public static ReadOnlyDictionary<string, double> UnaryOps { get; } = unaryOps.AsReadOnly();
 
         // Port: static binary_ops
@@ -119,20 +132,32 @@ namespace JsepSharp
             // { "**", 11 } <- Right to left, not left to right. Not in JavaScript version, though the Assignment plugin has `**=`.
         };
         static Dictionary<string, double> binaryOps = new(binaryOpsDefault);
+        /// <summary>
+        /// A readonly dictionary of binary operators. The keys are the operators and the values are the operator precedence.
+        /// </summary>
         public static ReadOnlyDictionary<string, double> BinaryOps { get; } = binaryOps.AsReadOnly();
 
         // Port: plugins.js
         readonly Dictionary<Type, Plugin> plugins = [];
+        /// <summary>
+        /// A readonly dictionary of registered plugins for this instance.
+        /// </summary>
         public ReadOnlyDictionary<Type, Plugin> Plugins;
 
         // Port: static right_associative
         static readonly HashSet<string> rightAssociativeDefault = [];
         static HashSet<string> rightAssociative = new(rightAssociativeDefault);
+        /// <summary>
+        /// A readonly set of right-associative operators.
+        /// </summary>
         public static IReadOnlySet<string> RightAssociative { get; } = rightAssociative;
 
         // Port: static additional_identifier_chars
         static readonly HashSet<char> additionalIdentifiersDefault = ['$', '_'];
         static HashSet<char> additionalIdentifiers = new(additionalIdentifiersDefault);
+        /// <summary>
+        /// A readonly set of additional identifier characters.
+        /// </summary>
         public static IReadOnlySet<char> AdditionalIdentifiers { get; } = additionalIdentifiers;
 
         // Port: static literals
@@ -143,6 +168,9 @@ namespace JsepSharp
             { "null", null }
         };
         static Dictionary<string, object?> literals = new(literalsDefault);
+        /// <summary>
+        /// A readonly dictionary of literals. The keys are the keywords and the values are the translation.
+        /// </summary>
         public static ReadOnlyDictionary<string, object?> Literals { get; } = literals.AsReadOnly();
 
         // Port: this_str
@@ -213,22 +241,33 @@ namespace JsepSharp
         /// </summary>
         /// <param name="pluginType">Type of plugin register and create, if it has not already been registered.</param>
         /// <returns>True if registration succeeded. False typically indicates the plugin is already present.</returns>
-        public bool RegisterPlugin(Type pluginType) // Port: plugins.register
+        public bool RegisterPlugin(
+            Type pluginType) // Port: plugins.register
         {
             if (plugins.ContainsKey(pluginType)) return false;
 
             if (!typeof(Plugin).IsAssignableFrom(pluginType))
             {
-                throw new ArgumentException($"{pluginType} does not implement abstract Plugin", nameof(pluginType));
+                throw new ArgumentException($"{pluginType} does not implement abstract class Jsep.Plugin!", nameof(pluginType));
             }
 
-            var p = (Plugin)Activator.CreateInstance(pluginType, this)!;
+            var p = CreatePlugin(pluginType);
+
             foreach (var dpt in p.DependentPlugins)
             {
                 RegisterPlugin(dpt);
             }
 
             return plugins.TryAdd(pluginType, p);
+        }
+
+        // Creates plugin instance using supplied type.
+        Plugin CreatePlugin(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+            Type pluginType)
+        {
+            return Activator.CreateInstance(pluginType, this) as Plugin ??
+                throw new ArgumentException($"Activator.CreateInstance() for {pluginType} returned null!", nameof(pluginType));
         }
 
         /// <summary>
@@ -441,11 +480,13 @@ namespace JsepSharp
             }
         }
 
-        /**
-         * Keep number parsing closer to the JavaScript implementation,
-         * which returns NaN on failures. Not part of original code.
-         */
-        static double ParseFloat(string? parseText)
+        /// <summary>
+        /// Parse numbers like the original JavaScript implementation,
+        /// which returns NaN on failures.
+        /// </summary>
+        /// <param name="parseText">String to parse.</param>
+        /// <returns>A valid Double value or <c>double.NaN</c>.</returns>
+        public static double ParseFloat(string? parseText)
         {
             if (parseText is null) return double.NaN;
 
@@ -478,11 +519,11 @@ namespace JsepSharp
         /// <param name="pluginTypes">An enumerable of plugin types to use when parsing.</param>
         /// <exception cref="ParsingException">Thrown if parsing errors occurred.</exception>
         /// <returns>A top-level node from the parsed AST.</returns>
-        public static SyntaxNode Parse(string expression, IEnumerable<Type> pluginTypes)
+        public static SyntaxNode Parse(string expression, IEnumerable<Type> pluginLoaders)
         {
             Jsep parser = new(expression);
 
-            foreach (var pt in pluginTypes)
+            foreach (var pt in pluginLoaders)
             {
                 parser.RegisterPlugin(pt);
             }
@@ -596,7 +637,6 @@ namespace JsepSharp
         /// <summary>
         /// Fired before for parsing occurs.
         /// </summary>
-
         public event Action? BeforeParsing; // Port: 'before-all' hook.
         void OnBeforeParsing()
         {
@@ -764,8 +804,11 @@ namespace JsepSharp
         }
 
         /// <summary>
-        /// This function is responsible for gobbling an individual expression:
-        /// e.g. `1`, `1+2`, `a+(b*2)-Math.sqrt(2)`
+        /// This function is responsible for gobbling an individual expression:<br />
+        /// e.g. 
+        ///   <c>1</c>,
+        ///   <c>1+2</c>,
+        ///   <c>a+(b*2)-Math.sqrt(2)</c>
         /// </summary>
         /// <returns>A SyntaxNode instance, or null.</returns>
         public SyntaxNode? GobbleBinaryExpression()
@@ -897,8 +940,12 @@ namespace JsepSharp
         }
 
         /// <summary>
-        /// An individual part of a binary expression:
-        /// e.g. `foo.bar(baz)`, `1`, `"abc"`, `(a % 2)` (because it's in parenthesis)
+        /// An individual part of a binary expression:<br />
+        /// e.g. 
+        ///   <c>foo.bar(baz)</c>,
+        ///   <c>1</c>,
+        ///   <c>"abc"</c>,
+        ///   <c>(a % 2)</c> (because it's in parenthesis)
         /// </summary>
         /// <returns>A SyntaxNode instance, or null.</returns>
         public SyntaxNode? GobbleToken()
@@ -997,10 +1044,15 @@ namespace JsepSharp
         }
 
         /// <summary>
-        /// Gobble properties of of identifiers/strings/arrays/groups.
-        /// e.g. `foo`, `bar.baz`, `foo['bar'].baz`
-        /// It also gobbles function calls:
-        /// e.g. `Math.acos(obj.angle)`
+        /// Gobble properties of of identifiers/strings/arrays/groups.<br />
+        /// e.g. 
+        ///   <c>foo</c>,
+        ///   <c>bar.baz</c>,
+        ///   <c>foo['bar'].baz</c>
+        ///   <br /><br />
+        /// It also gobbles function calls:<br />
+        /// e.g.
+        ///   <c>Math.acos(obj.angle)</c>
         /// </summary>
         /// <param name="node">The SyntaxNode respresenting the owner of this property.</param>
         /// <returns>A SyntaxNode instance.</returns>
@@ -1071,11 +1123,15 @@ namespace JsepSharp
             return node;
         }
 
-        public void ReadDigitsToBuilder(StringBuilder number)
+        /// <summary>
+        /// Reads digit characters to a string builder, until none are found.
+        /// </summary>
+        /// <param name="sb">The string builder to populate.</param>
+        public void ReadDigitsToBuilder(StringBuilder sb)
         {
             while (char.IsAsciiDigit(CharCode)) // exponent itself
             {
-                number.Append(Expression.CharAt(Index++));
+                sb.Append(Expression.CharAt(Index++));
             }
         }
 
@@ -1148,8 +1204,10 @@ namespace JsepSharp
         }
 
         /// <summary>
-        /// Parses a string literal, staring with single or double quotes with basic support for escape codes:
-        /// e.g. `"hello world"`, `'this is\nJSEP'`
+        /// Parses a string literal, staring with single or double quotes with basic support for escape codes:<br />
+        /// e.g.
+        ///   <c>"hello world"</c>,
+        ///   <c>'this is\nJSEP'</c>
         /// </summary>
         /// <returns>A LiteralNode instance.</returns>
         public LiteralNode GobbleStringLiteral()
@@ -1189,8 +1247,11 @@ namespace JsepSharp
         }
 
         /// <summary>
-        /// Gobbles only identifiers:
-        /// e.g. `foo`, `_value`, `$x1`
+        /// Gobbles only identifiers:<br />
+        /// e.g.
+        ///   <c>foo</c>,
+        ///   <c>_value</c>,
+        ///   <c>$x1</c>
         /// </summary>
         /// <returns></returns>
         public IdentifierNode GobbleIdentifier()
@@ -1232,9 +1293,12 @@ namespace JsepSharp
         /// <summary>
         /// Gobbles a list of arguments within the context of a function call
         /// or array literal. This function also assumes that the opening character
-        /// `(` or `[` has already been gobbled, and gobbles expressions and commas
-        /// until the terminator character `)` or `]` is encountered.
-        /// e.g. `foo(bar, baz)`, `my_func()`, or `[bar, baz]`
+        /// <c>(</c> or <c>[</c> has already been gobbled, and gobbles expressions and commas
+        /// until the terminator character <c>)</c> or <c>]</c> is encountered:<br />
+        /// e.g. 
+        ///   <c>foo(bar, baz)</c>,
+        ///   <c>my_func()</c>, or
+        ///   <c>[bar, baz]</c>
         /// </summary>
         /// <param name="termination">The terminating characer to stop the processing of arguments.</param>
         /// <returns>A list of zero or more SyntaxNodes. May have null entries.</returns>

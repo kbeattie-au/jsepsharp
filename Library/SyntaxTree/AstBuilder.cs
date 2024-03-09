@@ -1,8 +1,11 @@
 ﻿namespace JsepSharp.SyntaxTree
 {
     /// <summary>
-    /// Helper methods for building ASTs (abstract syntax trees) for comparisons.
+    /// AST builder shortcut methods. Can be used to shorten the code required for manually building an AST.
     /// </summary>
+    /// <remarks>
+    /// Useful for unit tests, but has other potential uses.
+    /// </remarks>
     public abstract class AstBuilder
     {
         protected static LiteralNode Lit(object? value, string raw, bool optional = false)

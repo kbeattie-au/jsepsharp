@@ -3,7 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
-    public sealed class UpdateNode : SyntaxNode
+    /// <summary>
+    /// Represents an update expression.
+    /// </summary>
+    public sealed class UpdateNode : SyntaxNode, IHasOperator
     {
         const string TYPE_NAME = "UpdateExpression";
 
@@ -21,8 +24,17 @@ namespace JsepSharp.Plugins.SyntaxTree
             Prefix = prefix;
         }
 
+        /// <inheritdoc />
         public string? Operator { get; set; }
+
+        /// <summary>
+        /// Subject of update assignment.
+        /// </summary>
         public SyntaxNode? Argument { get; set; }
+
+        /// <summary>
+        /// Whether update assignment is prefix (increment) or postfix (decrement).
+        /// </summary>
         public bool Prefix { get; set; }
 
         public bool ShouldSerializePrefix()
@@ -52,11 +64,17 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same values as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(UpdateNode node)
         {
             return Prefix == Prefix &&
@@ -64,6 +82,7 @@ namespace JsepSharp.Plugins.SyntaxTree
                    Equals(Argument, node.Argument);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return HashCode.Combine(Prefix, Operator, Argument);

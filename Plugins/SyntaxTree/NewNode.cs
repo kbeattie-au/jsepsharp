@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an constructor call.
+    /// </summary>
     public sealed class NewNode : SyntaxNode
     {
         const string TYPE_NAME = "NewExpression";
@@ -40,7 +43,14 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// The class being created.
+        /// </summary>
         public SyntaxNode? Callee { get; set; }
+
+        /// <summary>
+        /// Constructor arguments.
+        /// </summary>
         public List<SyntaxNode?> Arguments { get; set; }
 
         /// <inheritdoc />

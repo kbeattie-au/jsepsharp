@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents a function call.
+    /// </summary>
     public sealed class CallNode : SyntaxNode
     {
         const string TYPE_NAME = "CallExpression";
@@ -38,7 +41,14 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// Function being called.
+        /// </summary>
         public SyntaxNode? Callee { get; set; }
+
+        /// <summary>
+        /// Arguments for function.
+        /// </summary>
         public List<SyntaxNode?> Arguments { get; set; }
 
         /// <inheritdoc />

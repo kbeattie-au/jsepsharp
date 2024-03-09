@@ -82,10 +82,30 @@
         <div class="col-lg-4 col-md-12 col-sm-12">
             <h3>Output</h3>
 
-            Abstract Syntax Tree (JSON):
-            <div class="card p-1">
-                <div class="@(parseError ? "card-body invalid" : "card-body")">
-                    <code class="@(parseError ? "text-danger" : "")" style="font-size: 90%; white-space: pre-wrap">@parsed</code>
+            <div class="form-group">
+                <label for="outputFormat">Format:</label>
+                <InputSelect class="form-control"
+                             id="outputFormat"
+                             Value="@format"
+                             ValueExpression="@(() => format)"
+                             ValueChanged="@((string v) => { format = v; BuildOutput(); })">
+                    <option value="J">JSON</option>
+                    <option value="C">Unit Tests</option>
+                    <option value="S">S-expression</option>
+                </InputSelect>
+            </div>
+
+            <div class="form-group mt-1">
+                <InputCheckbox id="outputIndent"
+                               Value="@autoIndent"
+                               ValueExpression="@(() => autoIndent)"
+                               ValueChanged="@((bool v) => { autoIndent = v; BuildOutput(); })" />
+                <label for="outputIndent">Auto Indention</label>
+            </div>
+
+            <div class="card p-1 mt-1">
+                <div class="@(outputError ? "card-body invalid" : "card-body")">
+                    <code class="@(outputError ? "text-danger" : "")" style="font-size: 90%; white-space: pre-wrap">@outputText</code>
                 </div>
             </div>
         </div>
@@ -113,16 +133,21 @@
         }
     }
 
+    const string DEFAULT_OUTPUT_MESSAGE = "Enter an expression to see the parsed result.";
+
     [AllowNull]
     InputTextArea codeEditor;
 
     [Inject]
     IJSRuntime JSRuntime { get; set; } = null!;
 
-    private string code = "";
-    private string parsed = "Enter an expression to see the parsed result.";
-    private bool parseError = false;
-    private List<SelectablePlugin> pluginList = BuiltIns.All.Select(k => new SelectablePlugin(k)).ToList();
+    SyntaxTree.SyntaxNode? ast = null;
+    string format = "J";
+    string code = "";
+    string outputText = DEFAULT_OUTPUT_MESSAGE;
+    bool autoIndent = true;
+    bool outputError = false;
+    List<SelectablePlugin> pluginList = BuiltIns.All.Select(k => new SelectablePlugin(k)).ToList();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -133,7 +158,7 @@
         }
     }
 
-    private void ChangeAllPluginSelection(bool isSelected)
+    void ChangeAllPluginSelection(bool isSelected)
     {
         foreach (var pl in pluginList)
         {
@@ -141,37 +166,69 @@
         }
     }
 
-    private void SelectAllPlugins()
+    void SelectAllPlugins()
     {
         ChangeAllPluginSelection(true);
     }
 
-    private void SelectNoPlugins()
+    void SelectNoPlugins()
     {
         ChangeAllPluginSelection(false);
     }
 
-    private void ParseCode()
+    void BuildOutput()
+    {
+        try
+        {
+            if (ast is null)
+            {
+                outputText = DEFAULT_OUTPUT_MESSAGE;
+                return;
+            }
+
+            if (format == "S" || format == "C")
+            {
+                var nsb = new NodeStringBuilder();
+                nsb.UseSExpressions = (format == "S");
+                nsb.UseAutoIndent = autoIndent;
+                nsb.Node(ast);
+                outputText = nsb.ToString();
+            }
+            else
+            {
+                var resolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+                var settings = new JsonSerializerSettings() { ContractResolver = resolver };
+                var fmt = autoIndent ? Formatting.Indented : Formatting.None;
+                outputText = JsonConvert.SerializeObject(ast, fmt, settings);
+            }
+        }
+        catch (Exception ex)
+        {
+            outputError = true;
+            outputText = $"Output Error. {ex.GetType().Name} Thrown: {ex.Message}";
+        }
+    }
+
+    void ParseCode()
     {
         try
         {
             var pluginsSelected = pluginList.Where(pl => pl.IsSelected).Select(pl => pl.PluginType);
-            var ast = Jsep.Parse(code, pluginsSelected);
 
-            var resolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-            var settings = new JsonSerializerSettings() { ContractResolver = resolver };
-            parseError = false;
-            parsed = JsonConvert.SerializeObject(ast, Formatting.Indented, settings);
+            ast = Jsep.Parse(code, pluginsSelected);
+            outputError = false;
         }
         catch (ParsingException ex)
         {
-            parseError = true;
-            parsed = ex.Message;
+            outputError = true;
+            outputText = ex.Message;
         }
         catch (Exception ex)
         {
-            parseError = true;
-            parsed = $"{ex.GetType().Name} Thrown: {ex.Message}";
+            outputError = true;
+            outputText = $"Parsing Error. {ex.GetType().Name} Thrown: {ex.Message}";
         }
+
+        BuildOutput();
     }
 }

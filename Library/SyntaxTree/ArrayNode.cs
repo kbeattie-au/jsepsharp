@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an array expression.
+    /// </summary>
     public sealed class ArrayNode : SyntaxNode
     {
         const string TYPE_NAME = "ArrayExpression";

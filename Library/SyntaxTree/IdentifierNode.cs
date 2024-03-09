@@ -2,6 +2,9 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an identifier.
+    /// </summary>
     public sealed class IdentifierNode : SyntaxNode
     {
         const string TYPE_NAME = "Identifier";
@@ -32,6 +35,7 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>Identifier name.</summary>
         public string? Name { get; set; }
 
         /// <inheritdoc />

@@ -3,9 +3,13 @@
 namespace JsepSharp.SyntaxTree
 {
     /// <summary>
-    /// Used by JSON deserialization when an expression is not supported.
-    /// Plugins must be loaded to support custom types.
+    /// Used by JSON deserialization when an expression is encountered that is not supported.
+    /// This may be resolved by loading a plugin that supports the type encountered.
     /// </summary>
+    /// <remarks>
+    /// The parser will never return this, since syntax with unknown semantics is 
+    /// treated as an unrecoverable error.
+    /// </remarks>
     public sealed class UnknownNode : SyntaxNode
     {
         internal const string TYPE_NAME = "Unknown";
@@ -15,6 +19,9 @@ namespace JsepSharp.SyntaxTree
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// The name of the unknown node type encountered.
+        /// </summary>
         public string UnknownType { get; set; } = "";
 
         /// <inheritdoc />

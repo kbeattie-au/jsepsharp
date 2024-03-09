@@ -19,8 +19,14 @@ namespace JsepSharp
             Description = description;
         }
 
+        /// <summary>
+        /// The 1-based position of the character where a problem was encountered.
+        /// </summary>
         public int Index { get; }
 
+        /// <summary>
+        /// The description of the parsing problem.
+        /// </summary>
         public string Description { get; }
     }
 }

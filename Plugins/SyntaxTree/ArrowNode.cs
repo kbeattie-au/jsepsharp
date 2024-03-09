@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an arrow / lambda function expression.
+    /// </summary>
     public sealed class ArrowNode : SyntaxNode
     {
         const string TYPE_NAME = "ArrowFunctionExpression";
@@ -33,10 +36,22 @@ namespace JsepSharp.Plugins.SyntaxTree
             Async = @async;
         }
 
+        /// <summary>
+        /// Arguments for arrow function.
+        /// </summary>
         public List<SyntaxNode?> Params { get; set; }
 
+        /// <summary>
+        /// Body of arrow function.
+        /// </summary>
         public SyntaxNode? Body { get; set; }
 
+        /// <summary>
+        /// Whether or not this arrow function is async.
+        /// </summary>
+        /// <remarks>
+        /// Requires that AsyncAwaitPlugin is loaded to operate properly.
+        /// </remarks>
         public bool Async { get; set; }
 
         public bool ShouldSerializeAsync()
@@ -74,11 +89,17 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same values as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(ArrowNode node)
         {
             return Equals(Body, node.Body) &&
@@ -86,6 +107,7 @@ namespace JsepSharp.Plugins.SyntaxTree
                 SequenceEquals(Params, node.Params);   
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return HashCode.Combine(Body, Params);

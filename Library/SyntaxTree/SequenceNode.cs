@@ -2,6 +2,11 @@
 
 namespace JsepSharp.SyntaxTree
 {
+    /// <summary>
+    /// Represents an sequence expression.<br />
+    /// e.g.
+    ///   <c>(a b c)</c>
+    /// </summary>
     public sealed class SequenceNode : SyntaxNode
     {
         const string TYPE_NAME = "SequenceExpression";
@@ -29,6 +34,9 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// Zero or more nodes that make up the sequence.
+        /// </summary>
         public List<SyntaxNode?> Expressions { get; set; }
 
         /// <inheritdoc />

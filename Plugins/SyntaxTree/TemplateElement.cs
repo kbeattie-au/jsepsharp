@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {
+    /// <summary>
+    /// Represents an string portions inside a template literal.
+    /// </summary>
     public sealed class TemplateElement : SyntaxNode
     {
         const string TYPE_NAME = "TemplateElement";
@@ -21,8 +24,19 @@ namespace JsepSharp.Plugins.SyntaxTree
             Tail = tail;
         }
 
+        /// <summary>
+        /// The unparsed, raw string.
+        /// </summary>
         public string? Raw { get; set; } // Port: value.raw
+
+        /// <summary>
+        /// The string with escape characters resolved.
+        /// </summary>
         public string? Cooked { get; set; } // Port: value.cooked
+
+        /// <summary>
+        /// Indiciates that no further elements remain.
+        /// </summary>
         public bool Tail { get; set; }
 
         public bool ShouldSerializeTail()
@@ -42,11 +56,17 @@ namespace JsepSharp.Plugins.SyntaxTree
             sb.End();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj)
         {
             return NodeEquals(this, obj, Equals);
         }
 
+        /// <summary>
+        /// Determines if another node of the same type has the same values as this one.
+        /// </summary>
+        /// <param name="node">The node to compare with the current one.</param>
+        /// <returns><c>true</c> if the specified node is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(TemplateElement node)
         {
             return Raw == node.Raw &&
@@ -54,6 +74,7 @@ namespace JsepSharp.Plugins.SyntaxTree
                    Tail == node.Tail;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return HashCode.Combine(Raw, Cooked, Tail);

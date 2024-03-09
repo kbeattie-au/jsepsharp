@@ -1,18 +1,13 @@
-﻿namespace JsepSharp
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace JsepSharp
 {
-    // https://blog.rsuter.com/advanced-newtonsoft-json-dynamically-rename-or-ignore-properties-without-changing-the-serialized-class/
-    // https://www.newtonsoft.com/json/help/html/ContractResolver.htm
-
-    // Also:
-    // https://devblogs.microsoft.com/dotnet/system-text-json-in-dotnet-7/#contract-customization
-    // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/custom-contracts
-
     /// <summary>
-    /// Plugin interface.
+    /// Plugin base class. All JsepSharp plugins must implement this class.
     /// </summary>
-    public abstract class Plugin(Jsep parser)
+    public abstract class Plugin
     {
-        protected Jsep Parser { get; set; } = parser;
+        protected Jsep Parser { get; set; }
 
         /// <summary>
         /// Name of the plugin.
@@ -23,5 +18,15 @@
         /// Plugins that must be loaded for this plugin to work properly.
         /// </summary>
         public virtual IEnumerable<Type> DependentPlugins { get => Array.Empty<Type>(); }
+
+        /// <summary>
+        /// Initialize a new plugin instance.
+        /// </summary>
+        /// <param name="parser">Parser instance.</param>
+        [SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "Want separate XML documentation comments.")]
+        public Plugin(Jsep parser)
+        {
+            Parser = parser;
+        }
     }
 }

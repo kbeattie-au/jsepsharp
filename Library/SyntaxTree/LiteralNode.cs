@@ -1,7 +1,7 @@
-﻿using JsepNet.Json;
+﻿using JsepSharp.Json;
 using Newtonsoft.Json;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     public sealed class LiteralNode : SyntaxNode
     {

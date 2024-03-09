@@ -1,7 +1,7 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
-namespace JsepNet.Plugins.SyntaxTree
+namespace JsepSharp.Plugins.SyntaxTree
 {
     public sealed class NewNode : SyntaxNode
     {

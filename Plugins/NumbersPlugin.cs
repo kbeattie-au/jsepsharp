@@ -1,8 +1,8 @@
-﻿using JsepNet.Extensions;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using System.Text;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds support for hexadecimal, octal, and binary number formats. 

@@ -1,7 +1,7 @@
-﻿using JsepNet.Extensions;
-using JsepNet.Plugins.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.Plugins.SyntaxTree;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds support for async arrow function (and inner await) parsing.

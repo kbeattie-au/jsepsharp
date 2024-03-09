@@ -4,13 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Title>JsepNet</Title>
+    <Title>JsepSharp</Title>
     <Description>A .NET implementation of the Jsep JavaScript Expression Parser. Designed to parse value expressions, like those written in individual spreadsheet cells, and not operations.</Description>
-    <Copyright>Abbott-Unlimited LLC© 2024</Copyright>
     <RepositoryType>git</RepositoryType>
 	<DebugType>portable</DebugType>
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<EnableNETAnalyzers>true</EnableNETAnalyzers>
+	<AnalysisLevel>latest</AnalysisLevel>
+	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>

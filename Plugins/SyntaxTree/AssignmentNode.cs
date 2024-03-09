@@ -1,7 +1,7 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 using System.Text.Json.Serialization;
 
-namespace JsepNet.Plugins.SyntaxTree
+namespace JsepSharp.Plugins.SyntaxTree
 {
     public sealed class AssignmentNode : SyntaxNode
     {

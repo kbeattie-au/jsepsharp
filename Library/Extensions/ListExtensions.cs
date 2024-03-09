@@ -1,4 +1,4 @@
-﻿namespace JsepNet.Extensions
+﻿namespace JsepSharp.Extensions
 {
     /// <summary>
     /// Adds Pop/Push() to lists, since Stack<T> doesn't supported indexed[] access,

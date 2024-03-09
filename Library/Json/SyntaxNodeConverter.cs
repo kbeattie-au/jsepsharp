@@ -1,8 +1,8 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace JsepNet.Json
+namespace JsepSharp.Json
 {
     /// <summary>
     /// Parses a SyntaxNode object to the correct subclass, using the type property.

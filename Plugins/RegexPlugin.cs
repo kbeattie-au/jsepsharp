@@ -1,7 +1,7 @@
-﻿using JsepNet.Extensions;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds support for parsing regular expression literals.

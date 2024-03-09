@@ -1,6 +1,6 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 
-namespace JsepNet
+namespace JsepSharp
 {
     // Port: This is part of the Hooks.add()/Hooks.remove() replacement.
 

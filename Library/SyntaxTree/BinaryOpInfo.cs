@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     internal sealed class BinaryOpInfo(string value, double prec, bool rightAssoc) : SyntaxNode()
     {

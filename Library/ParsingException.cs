@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace JsepNet
+namespace JsepSharp
 {
     /// <summary>
     /// The exception that is thrown when Jsep or a plugin encounters a non-recoverable parsing error.

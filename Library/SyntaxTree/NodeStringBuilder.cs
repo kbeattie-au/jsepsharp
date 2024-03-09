@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     public sealed class NodeStringBuilder
     {

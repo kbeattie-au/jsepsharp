@@ -1,4 +1,4 @@
-﻿namespace JsepNet.SyntaxTree
+﻿namespace JsepSharp.SyntaxTree
 {
     /// <summary>
     /// Helper methods for building ASTs (abstract syntax trees) for comparisons.

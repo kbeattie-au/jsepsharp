@@ -1,7 +1,7 @@
-﻿using JsepNet.Plugins.SyntaxTree;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Plugins.SyntaxTree;
+using JsepSharp.SyntaxTree;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds parsing support for arrow function expressions: () => x, v => v, (a, b) => v

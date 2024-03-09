@@ -1,7 +1,7 @@
-﻿using JsepNet.Plugins.SyntaxTree;
-using JsepNet.Extensions;
+﻿using JsepSharp.Plugins.SyntaxTree;
+using JsepSharp.Extensions;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds rudimentary spread operator support (...).

@@ -1,7 +1,7 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
-namespace JsepNet.Tests
+namespace JsepSharp.Tests
 {
     [TestClass]
     public class JsepTests : AstBuilder
@@ -410,7 +410,7 @@ namespace JsepNet.Tests
         [TestMethod]
         public void TestJavascriptComparison()
         {
-            // Generated from JsepNet.Tests.Generate/app.js
+            // Generated from JsepSharp.Tests.Generate/app.js
             Dictionary<string, string> jsonFromJs = new()
             {
                 { @"[1,,3]", @"{""type"":""ArrayExpression"",""elements"":[{""type"":""Literal"",""value"":1,""raw"":""1""},null,{""type"":""Literal"",""value"":3,""raw"":""3""}]}" },

@@ -1,4 +1,4 @@
-﻿namespace JsepNet.Extensions
+﻿namespace JsepSharp.Extensions
 {
     /// <summary>
     /// String extension methods behavior closer to the JavaScript equivalents.

@@ -1,4 +1,4 @@
-﻿namespace JsepNet.SyntaxTree
+﻿namespace JsepSharp.SyntaxTree
 {
     /// <summary>
     /// Supports buffered builder for instance to string conversion.

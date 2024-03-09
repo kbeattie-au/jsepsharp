@@ -1,8 +1,8 @@
-﻿using JsepNet.Json;
+﻿using JsepSharp.Json;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     [JsonConverter(typeof(SyntaxNodeConverter))]
     public abstract class SyntaxNode : IToStringBuilder

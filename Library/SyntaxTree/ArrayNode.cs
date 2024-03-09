@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     public sealed class ArrayNode : SyntaxNode
     {

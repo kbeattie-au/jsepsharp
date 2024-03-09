@@ -1,8 +1,8 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Represents an EcmaScript RegExp literal.

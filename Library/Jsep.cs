@@ -1,10 +1,10 @@
-﻿using JsepNet.Extensions;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text;
 
-namespace JsepNet
+namespace JsepSharp
 {
     /// <summary>
     /// A .NET Implementation of the JavaScript Expression Parser (Jsep) project.
@@ -116,7 +116,7 @@ namespace JsepNet
             { "<<", 8 }, { ">>", 8 }, { ">>>", 8 },
             { "+", 9 }, { "-", 9 },
             { "*", 10 }, { "/", 10 }, { "%", 10 },
-            // { "**", 11 } <- right to left, not left to right, not in JavaScript version though Assingment plugin strangely has `**=`.
+            // { "**", 11 } <- Right to left, not left to right. Not in JavaScript version, though the Assignment plugin has `**=`.
         };
         static Dictionary<string, double> binaryOps = new(binaryOpsDefault);
         public static ReadOnlyDictionary<string, double> BinaryOps { get; } = binaryOps.AsReadOnly();
@@ -219,7 +219,7 @@ namespace JsepNet
 
             if (!typeof(Plugin).IsAssignableFrom(pluginType))
             {
-                throw new ArgumentException($"{pluginType} does not implement IPlugin", nameof(pluginType));
+                throw new ArgumentException($"{pluginType} does not implement abstract Plugin", nameof(pluginType));
             }
 
             var p = (Plugin)Activator.CreateInstance(pluginType, this)!;
@@ -287,7 +287,7 @@ namespace JsepNet
         /// <param name="literalName">Literal name.</param>
         /// <param name="literalValue">Replacement value.</param>
         /// <returns>True if literal added; False if existing literal updated.</returns>
-        public static bool AddLiteral(string literalName, bool? literalValue)
+        public static bool AddLiteral(string literalName, object? literalValue)
         {
             if (literals.TryAdd(literalName, literalValue)) return true;
 
@@ -398,11 +398,11 @@ namespace JsepNet
         /// <summary>
         /// Removes string from being automatically converted to a literal value at parse time.
         /// </summary>
-        /// <param name="literal_name">Literal name.</param>
+        /// <param name="literalName">Literal name.</param>
         /// <returns>True if literal removed.</returns>
-        public static bool RemoveLiteral(string literal_name)
+        public static bool RemoveLiteral(string literalName)
         {
-            return literals.Remove(literal_name);
+            return literals.Remove(literalName);
         }
 
         /// <summary>
@@ -453,6 +453,7 @@ namespace JsepNet
 
             return double.NaN;
         }
+
         /// <summary>
         /// Returns expression parsed to AST (abstract syntax tree).
         /// </summary>
@@ -773,11 +774,11 @@ namespace JsepNet
             string? biop;
             double prec;
             List<SyntaxNode> stack;
-            BinaryOpInfo biop_info;
+            BinaryOpInfo biopInfo;
             SyntaxNode? left;
             SyntaxNode? right;
             int i;
-            string cur_biop;
+            string curBiop;
 
             // First, try to get the leftmost thing.
             // Then, check to see if there's a binary operator operating on that leftmost thing.
@@ -797,7 +798,7 @@ namespace JsepNet
 
             // Otherwise, we need to start a stack to properly place the binary operations in their
             // precedence structure.
-            biop_info = new BinaryOpInfo(biop, BinaryPrecedence(biop), rightAssociative.Contains(biop));
+            biopInfo = new BinaryOpInfo(biop, BinaryPrecedence(biop), rightAssociative.Contains(biop));
 
             right = GobbleToken();
             if (right is null)
@@ -805,7 +806,7 @@ namespace JsepNet
                 throw Error($"Expected expression after {biop}");
             }
 
-            stack = [left!, biop_info, right!];
+            stack = [left!, biopInfo, right!];
 
             biop = GobbleBinaryOp();
 
@@ -818,13 +819,13 @@ namespace JsepNet
                     break;
                 }
 
-                biop_info = new BinaryOpInfo(biop, prec, rightAssociative.Contains(biop));
+                biopInfo = new BinaryOpInfo(biop, prec, rightAssociative.Contains(biop));
 
-                cur_biop = biop;
+                curBiop = biop;
 
                 bool comparePrev(BinaryOpInfo prev)
                 {
-                    return biop_info.RightAssociative && prev.RightAssociative ?
+                    return biopInfo.RightAssociative && prev.RightAssociative ?
                         prec > prev.Precision :
                         prec <= prev.Precision;
                 }
@@ -842,10 +843,10 @@ namespace JsepNet
                 node = GobbleToken();
                 if (node is null)
                 {
-                    throw Error($"Expected expression after {cur_biop}");
+                    throw Error($"Expected expression after {curBiop}");
                 }
 
-                stack.Add(biop_info);
+                stack.Add(biopInfo);
                 stack.Add(node);
 
                 // Port: Changed while() loop to avoid assignment.
@@ -1241,31 +1242,31 @@ namespace JsepNet
         {
             List<SyntaxNode?> args = [];
             bool closed = false;
-            int separator_count = 0;
+            int separatorCount = 0;
 
             while (Index < Expression.Length)
             {
                 GobbleSpaces();
-                var ch_i = CharCode;
+                var chi = CharCode;
 
-                if (ch_i == termination) // done parsing
+                if (chi == termination) // done parsing
                 {
                     closed = true;
                     Index++;
 
-                    if (termination == CPAREN_CODE && separator_count > 0 && separator_count >= args.Count)
+                    if (termination == CPAREN_CODE && separatorCount > 0 && separatorCount >= args.Count)
                     {
                         throw Error($"Unexpected token {termination}");
                     }
 
                     break;
                 }
-                else if (ch_i == COMMA_CODE) // between expressions
+                else if (chi == COMMA_CODE) // between expressions
                 {
                     Index++;
-                    separator_count++;
+                    separatorCount++;
 
-                    if (separator_count != args.Count) // missing argument
+                    if (separatorCount != args.Count) // missing argument
                     {
                         if (termination == CPAREN_CODE)
                         {
@@ -1273,14 +1274,14 @@ namespace JsepNet
                         }
                         else if (termination == CBRACK_CODE)
                         {
-                            for (var arg = args.Count; arg < separator_count; arg++)
+                            for (var arg = args.Count; arg < separatorCount; arg++)
                             {
                                 args.Add(null);
                             }
                         }
                     }
                 }
-                else if (args.Count != separator_count && separator_count != 0)
+                else if (args.Count != separatorCount && separatorCount != 0)
                 {
                     // NOTE: `&& separator_count !== 0` allows for either all commas, or all spaces as arguments.
                     throw Error("Expected comma");

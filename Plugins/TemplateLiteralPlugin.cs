@@ -1,9 +1,9 @@
-﻿using JsepNet.Extensions;
-using JsepNet.Plugins.SyntaxTree;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.Plugins.SyntaxTree;
+using JsepSharp.SyntaxTree;
 using System.Text;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Adds support for parsing template and tagged template literals.

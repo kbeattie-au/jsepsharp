@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JsepNet.SyntaxTree
+namespace JsepSharp.SyntaxTree
 {
     /// <summary>
     /// Used by JSON deserialization when an expression is not supported.

@@ -1,7 +1,7 @@
-﻿using JsepNet.Plugins.SyntaxTree;
-using JsepNet.SyntaxTree;
+﻿using JsepSharp.Plugins.SyntaxTree;
+using JsepSharp.SyntaxTree;
 
-namespace JsepNet.Plugins.Tests
+namespace JsepSharp.Plugins.Tests
 {
     [TestClass]
     public class TernaryTests : AstBuilderWithPlugins

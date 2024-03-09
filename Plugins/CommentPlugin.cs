@@ -1,6 +1,6 @@
-﻿using JsepNet.Extensions;
+﻿using JsepSharp.Extensions;
 
-namespace JsepNet.Plugins
+namespace JsepSharp.Plugins
 {
     /// <summary>
     /// Treats all comments as whitespace to remove from parsing.

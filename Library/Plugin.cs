@@ -1,4 +1,4 @@
-﻿namespace JsepNet
+﻿namespace JsepSharp
 {
     // https://blog.rsuter.com/advanced-newtonsoft-json-dynamically-rename-or-ignore-properties-without-changing-the-serialized-class/
     // https://www.newtonsoft.com/json/help/html/ContractResolver.htm

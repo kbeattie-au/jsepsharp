@@ -4,7 +4,7 @@ import { Jsep } from 'jsep';
 // Alteration: Ternary/conditional (?:) is tested separately in the plugin tests.
 //
 // Generates output for comparison with C# implementation.
-// Used to generate examples in TestJsepJavascriptComparison() in JsepNet.Tests.csproj.
+// Used to generate examples in TestJsepJavascriptComparison() in JsepSharp.Tests.csproj.
 const arr = [
     '[1,,3]',
     '[1,,]',

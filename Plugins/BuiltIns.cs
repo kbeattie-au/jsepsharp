@@ -1,4 +1,4 @@
-﻿namespace JsepNet.Plugins
+﻿namespace JsepSharp.Plugins
 {
     public static class BuiltIns
     {

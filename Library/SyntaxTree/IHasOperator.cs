@@ -1,4 +1,4 @@
-﻿namespace JsepNet.SyntaxTree
+﻿namespace JsepSharp.SyntaxTree
 {
     public interface IHasOperator
     {

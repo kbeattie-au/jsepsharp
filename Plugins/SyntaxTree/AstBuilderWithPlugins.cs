@@ -1,6 +1,6 @@
-﻿using JsepNet.SyntaxTree;
+﻿using JsepSharp.SyntaxTree;
 
-namespace JsepNet.Plugins.SyntaxTree
+namespace JsepSharp.Plugins.SyntaxTree
 {
     public class AstBuilderWithPlugins : AstBuilder
     {

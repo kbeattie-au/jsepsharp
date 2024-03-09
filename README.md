@@ -25,7 +25,7 @@ When it does, see the package details for the minimum supported .NET Framework a
 The solution can be built from within Visual Studio (Community Edition works fine), or through the terminal / command prompt via `dotnet`:
 
 ```powershell
-dotnet build .\JsepSharp.sln
+dotnet build
 ```
 
 You'll need to make sure you have the .NET Core 8.x (or newer) SDK installed, or the command will not work.
@@ -36,6 +36,14 @@ You'll need to make sure you have the .NET Core 8.x (or newer) SDK installed, or
 * .NET Core SDK: 8.x
 
 Older versions of both may work with (or without) some code adjustments, but have not been tested.
+
+### Testing
+
+Automated tests can be run from within the Test Explorer in Visual Studio, or via a terminal / command prompt via `dotnet`:
+
+```powershell
+dotnet test
+```
 
 ### Usage
 
@@ -145,30 +153,22 @@ These exist to provide extensibility points that plugins can use to integrate in
 ##### Hook Types
 
 * **`BeforeParsing`**: called just before starting all expression parsing. Port of `before-all`
-* **`AfterParsing`**: called after parsing all. Read/Write `arg.node` as required. Port of `after-all`.
-* **`BeforeExpression`**: called just before attempting to parse an expression. Set `arg.node` as required. Port of `gobble-expression`.
-* **`AfterExpression`**: called just after parsing an expression. Read/Write `arg.node` as required. Port of `after-expression`.
-* **`BeforeToken`**: called just before attempting to parse a token. Set `arg.node` as required. Port of `gobble-token`.
-* **`AfterToken`**: called just after parsing a token. Read/Write `arg.node` as required. Port of `after-token`.
+* **`AfterParsing`**: called after parsing all. Read/Write `env.Node` as required. Port of `after-all`.
+* **`BeforeExpression`**: called just before attempting to parse an expression. Set `env.Node` as required. Port of `gobble-expression`.
+* **`AfterExpression`**: called just after parsing an expression. Read/Write `env.Node` as required. Port of `after-expression`.
+* **`BeforeToken`**: called just before attempting to parse a token. Set `env.Node` as required. Port of `gobble-token`.
+* **`AfterToken`**: called just after parsing a token. Read/Write `env.Node` as required. Port of `after-token`.
 * **`AfterSpaces`**: called when gobbling whitespace. Port of `gobble-spaces`.
 
-##### Example
+##### Examples
 
-The example plugin below transforms the statement `debugger` into a DebuggerNode. To keep things brief, namespace using statements are omitted:
-
-TODO: Finish these
-
-```csharp
-// New AST Node.
-
-// New Plugin class.
-
-// New Plugin tests.
-```
-
-##### More Examples
-
-The Comment, Spread, and Ternary plugins are relatively simple, as far as built-in plugins go, so they may serve as some good additional examples.
+* The **Spread** plugin is the smallest of the bulit-ins.
+* The **AsyncAwait** plugin demonstrates how to declare a plugin depends upon another plugin.
+* The **Arrow** plugin shows how to use `ReplaceNodes()` to alter previously parsed results.
+* The **Comment** plugin shows how to instruct the parser to ignore additional sequences.
+* The **New** plugin swaps out a node with a new type of node.
+* The **Regex** plugin shows how to create a new type of literal to the parser.
+* The **Number** plugin shows how to extend the parsing behavior of an existing literal.
 
 ### Compatibility with JavaScript Version
 
@@ -187,9 +187,9 @@ The Comment, Spread, and Ternary plugins are relatively simple, as far as built-
 * Exact same implementation. This is not possible due to language differences, such as those found with the type system. Though in many places the implementation is pretty close, there are other places where code had to be implemented differently.
 * Esprima comparisons in tests. It is a recommended to have some tests compare outputs from parsing against the JavaScript implementation, but comparing additionally against Esprima like the JavaScript implementation does in some tests is not necessary.
 
-#### Intentional Differences
+#### Known Differences
 
-* Plugin: The `TemplateElement`  node does not place `raw` and `cooked`  under a nested `value` property.
+* The `TemplateElement`  node does not place `raw` and `cooked`  under a nested `value` property. This is likely to change in the future to match the JavaScript behavior.
 
 ### License
 
@@ -198,5 +198,3 @@ JsepSharp is a derivative work under the MIT license. See LICENSE file.
 ### Thanks
 
 To all the [contributors](https://github.com/EricSmekens/jsep/graphs/contributors) of the original jsep project.
-
-

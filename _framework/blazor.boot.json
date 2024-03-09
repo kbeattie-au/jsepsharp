@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "JsepSharp.Demo",
   "resources": {
-    "hash": "sha256-hjGE56b/M76wqHfxF8pIytG7L14qqyvf1Qa6W45ffRs=",
+    "hash": "sha256-rVzq8cip8+mvufs6bsMycbiSC6BTusfnj53YCJvJvrA=",
     "jsModuleNative": {
       "dotnet.native.8.0.2.aryogbojgz.js": "sha256-vpkH3Tf83Y3yV/YpgeU1byRZyJlNjYq3Wu5bn1qKYK0="
     },
@@ -9,7 +9,7 @@
       "dotnet.runtime.8.0.2.8j60y5zbay.js": "sha256-54KSaoOArNfygQbV+r4B5y3ys53v2tnvFIyZcZiUmi0="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-z4Oydjo9UbAYmVqs4Yh1OUkK6CUsjEvqknmJqOc8r54="
+      "dotnet.native.wasm": "sha256-Tbo+yaQS44Qkl7uNkZB3srZ9v6MTcstyIG+44uE2i+w="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -17,9 +17,9 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "JsepSharp.Demo.wasm": "sha256-Rf4sIPWeN2FsZ7ZAk275aTecLcTwxdi3LzAaQzNm9Xk=",
-      "JsepSharp.Plugins.wasm": "sha256-VHFe6eyXYal4r8DPMlNKu23BAusM+JRgbaMlVjT0+mo=",
-      "JsepSharp.wasm": "sha256-Kqk+d+92yx6o/ZAZ+RWTNOnf/EpgUSwQYuS1mltq1UA=",
+      "JsepSharp.Demo.wasm": "sha256-3eJGIeHTHcK8xowfmTGVyrg5Juom8+BGZrF/gUe+ieg=",
+      "JsepSharp.Plugins.wasm": "sha256-L8zpt4gER2BvcjYMbrtJ8LmFEO3OosW0tmqu50tWwtw=",
+      "JsepSharp.wasm": "sha256-xD7a1Nj9V0bfFK2Jwqq3VDVR9lm2OojHxGt0ruaUV+U=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-TkL8BK0Ag1NDtqXGlafzvdzi+HvFtcAN1Mtjz/EKbuw=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-4COGu7Ku65Yxsp0EmHknFb2tlfgDLJqaU+ZICRbRFhk=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-6/wQ1WwjWS4UaV16fFaQL1R4PhXOvw7o7ktSVtYvDhc=",

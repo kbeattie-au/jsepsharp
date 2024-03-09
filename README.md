@@ -1,4 +1,4 @@
-## JsepSharp: Tiny JavaScript Expression Parser Implementation for .NET
+## [JsepSharp](https://kbeattie-au.github.io/jsepsharp/): Tiny JavaScript Expression Parser Implementation for .NET
 
 This is a C# .NET Core conversion of the [jsep](https://ericsmekens.github.io/jsep/) project, which is a simple expression parser written in JavaScript. 
 

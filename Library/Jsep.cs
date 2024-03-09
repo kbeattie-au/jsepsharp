@@ -1062,10 +1062,6 @@ namespace JsepSharp
 
             var ch = CharCode;
 
-            // TODO:
-            // Is there a bug if this gets invoked at the end of syntax? It would just return the supplied node.
-            // That seems wrong.
-
             while (ch == PERIOD_CODE || ch == OBRACK_CODE || ch == OPAREN_CODE || ch == QUMARK_CODE)
             {
                 bool optional = false;

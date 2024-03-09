@@ -49,10 +49,22 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
             <h3>Plugins</h3>
 
-            Enabled Plugins:
+            Enabled Plugin Types (Loaded in Order Listed):
             <div class="card p-1">
-                TODO: Have ability to check<br />
-                and uncheck plugins.
+                @foreach (var pl in pluginList)
+                {
+                    var itemName = pl.Name;
+                    var itemId = $"Plugin{itemName}";
+                    <div>
+                        <InputCheckbox id="@itemId" @bind-Value="pl.IsSelected"></InputCheckbox>
+                        <label for="@itemId">@itemName</label>
+                    </div>
+                }
+            </div>
+
+            <div style="padding: 0.75rem 0 1rem 0">
+                <button class="btn btn-sm btn-light" type="button" @onclick="SelectAllPlugins">All</button>
+                <button class="btn btn-sm btn-light" type="button" @onclick="SelectNoPlugins">None</button>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -60,7 +72,7 @@
 
             <div class="form-group">
                 <label for="codeInput">Enter an Expression:</label>
-                <InputTextArea id="codeInput" @ref="codeEditor" @bind-Value="code" placeholder="x + 2" class="form-control" />
+                <InputTextArea id="codeInput" @ref="codeEditor" @bind-Value="code" placeholder="e.g. x + 2" class="form-control" />
             </div>
 
             <div style="padding: 0.75rem 0 1rem 0">
@@ -81,18 +93,70 @@
 </div>
 
 @code {
+    class SelectablePlugin
+    {
+        public Type PluginType { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public SelectablePlugin() : this(typeof(Plugin)) { }
+
+        public SelectablePlugin(Type typ) : this(typ, true) { }
+
+        public SelectablePlugin(Type typ, bool isSelected)
+        {
+            PluginType = typ;
+            Name = typ.Name;
+            IsSelected = isSelected;
+        }
+    }
+
     [AllowNull]
     InputTextArea codeEditor;
+
+    [Inject]
+    IJSRuntime JSRuntime { get; set; } = null!;
 
     private string code = "";
     private string parsed = "Enter an expression to see the parsed result.";
     private bool parseError = false;
+    private List<SelectablePlugin> pluginList = BuiltIns.All.Select(k => new SelectablePlugin(k)).ToList();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && JSRuntime is not null)
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().GetName();
+            await JSRuntime.InvokeVoidAsync("setVersion", assemblyName.Version?.ToString() ?? "");
+        }
+    }
+
+    private void ChangeAllPluginSelection(bool isSelected)
+    {
+        foreach (var pl in pluginList)
+        {
+            pl.IsSelected = isSelected;
+        }
+    }
+
+    private void SelectAllPlugins()
+    {
+        ChangeAllPluginSelection(true);
+    }
+
+    private void SelectNoPlugins()
+    {
+        ChangeAllPluginSelection(false);
+    }
 
     private void ParseCode()
     {
         try
         {
-            var ast = Jsep.Parse(code, BuiltIns.All);
+            var pluginsSelected = pluginList.Where(pl => pl.IsSelected).Select(pl => pl.PluginType);
+            var ast = Jsep.Parse(code, pluginsSelected);
 
             var resolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
             var settings = new JsonSerializerSettings() { ContractResolver = resolver };

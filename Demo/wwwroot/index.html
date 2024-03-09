@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Demo</title>
+    <title>JsepSharp Parser Loading&hellip;</title>
     <base href="/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
@@ -37,6 +37,22 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <footer>
+        <div id="footer" style="display: none">
+            Running Version <span id="ver"></span> of JsepSharp via
+            <a href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor">Blazor</a>.
+        </div>
+    </footer>
+
+    <script>
+        function setVersion(ver) {
+            var fe = document.getElementById('footer');
+            fe.style.display = 'block';
+
+            var ve = document.getElementById('ver');
+            ve.textContent = ver;
+        }
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

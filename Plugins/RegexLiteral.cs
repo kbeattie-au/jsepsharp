@@ -1,5 +1,6 @@
 ﻿using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace JsepSharp.Plugins
@@ -13,13 +14,22 @@ namespace JsepSharp.Plugins
     public class RegexLiteral : IToStringBuilder
     {
         /// <summary>
+        /// Returns string &quot;RegExp&quot;.
+        /// </summary>
+        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Present for JSON output.")]
+        [JsonProperty(Order = -2)]
+        public string Type { get { return "RegExp"; } }
+
+        /// <summary>
         /// The regular expression pattern.
         /// </summary>
+        [JsonProperty(Order = -1)]
         public string Pattern { get; set; }
 
         /// <summary>
         /// A string containing regular expression flag characters.
         /// </summary>
+        [JsonProperty(Order = 0)]
         public string Flags { get; set; }
 
         /// <summary>

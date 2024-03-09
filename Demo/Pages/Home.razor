@@ -1,0 +1,113 @@
+﻿@page "/"
+
+<PageTitle>JsepSharp Parser Demo</PageTitle>
+
+<h1>JsepSharp</h1>
+<div class="content px-4">
+    <h2>About</h2>
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <p>
+                JsepSharp is a JavaScript expression parser written in C# and a conversion of the
+                <a href="https://ericsmekens.github.io/jsep/">jsep</a> project.
+                It is able to parse expressions like <tt>x * (1 + 2)</tt> or <tt>foo(bar.baz[0])</tt>
+                and convert them into an
+                <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree (AST)</a>.
+            </p>
+            <p>
+                It does not parse <tt>function</tt>, <tt>class</tt>, <tt>if</tt>, <tt>while</tt> or
+                other operations, and does not support features like assignment without a plugin. It is more a
+                tool to parse the kind of expressions that would be written in a spreadsheet cell, or used with
+                field bindings in a reporting solution.
+            </p>
+            <p>
+                The parser is designed with extensibility in mind, so developers can
+                add support for their own operators and syntax tree nodes. Several features,
+                like ternary support (<tt>?:</tt>), are implemented as <a href="#">optional plugins</a>.
+            </p>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h3>License and Source Code</h3>
+            <p>
+                The source code is <a href="#">hosted on GitHub</a> and available under the <a href="#">MIT License</a>.
+            </p>
+
+            <h3>Usage and Examples</h3>
+            <p>
+                See the <a href="#">project readme</a> for examples on how to use and customize the parser.
+            </p>
+
+            <h3>Package / Download</h3>
+            <p>
+                No NuGet package or pre-compiled binaries exist yet. Both are planned.
+            </p>
+        </div>
+    </div>
+
+    <h2>Demo</h2>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <h3>Plugins</h3>
+
+            Enabled Plugins:
+            <div class="card p-1">
+                TODO: Have ability to check<br />
+                and uncheck plugins.
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <h3>Input</h3>
+
+            <div class="form-group">
+                <label for="codeInput">Enter an Expression:</label>
+                <InputTextArea id="codeInput" @ref="codeEditor" @bind-Value="code" placeholder="x + 2" class="form-control" />
+            </div>
+
+            <div style="padding: 0.75rem 0 1rem 0">
+                <button class="btn btn-primary" type="button" @onclick="ParseCode">Parse</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            <h3>Output</h3>
+
+            Abstract Syntax Tree (JSON):
+            <div class="card p-1">
+                <div class="@(parseError ? "card-body invalid" : "card-body")">
+                    <code class="@(parseError ? "text-danger" : "")" style="font-size: 90%; white-space: pre-wrap">@parsed</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [AllowNull]
+    InputTextArea codeEditor;
+
+    private string code = "";
+    private string parsed = "Enter an expression to see the parsed result.";
+    private bool parseError = false;
+
+    private void ParseCode()
+    {
+        try
+        {
+            var ast = Jsep.Parse(code, BuiltIns.All);
+
+            var resolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+            var settings = new JsonSerializerSettings() { ContractResolver = resolver };
+            parseError = false;
+            parsed = JsonConvert.SerializeObject(ast, Formatting.Indented, settings);
+        }
+        catch (ParsingException ex)
+        {
+            parseError = true;
+            parsed = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            parseError = true;
+            parsed = $"{ex.GetType().Name} Thrown: {ex.Message}";
+        }
+    }
+}

@@ -10,9 +10,12 @@ namespace JsepSharp.SyntaxTree
         [JsonIgnore]
         public abstract int TypeId { get; }
 
+        [JsonProperty(Order = -3)]
         public bool Optional { get; set; }
 
         private string? typ;
+
+        [JsonProperty(Order = -2)]
         public string Type
         {
             get

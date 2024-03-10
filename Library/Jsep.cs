@@ -19,7 +19,7 @@ namespace JsepSharp
         public Jsep(string expr)
         {
             Expression = expr;
-            Plugins = plugins.AsReadOnly();
+            Plugins = new(plugins);
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace JsepSharp
         static int freeId = 1;
         static readonly Dictionary<Type, int> nodeTypesByTypeId = [];
         /// <summary>A readonly dictionary of node types and type identifiers.</summary>
-        public static ReadOnlyDictionary<Type, int> NodeTypesByTypeId { get; } = nodeTypesByTypeId.AsReadOnly();
+        public static ReadOnlyDictionary<Type, int> NodeTypesByTypeId { get; } = new(nodeTypesByTypeId);
 
         static readonly Dictionary<int, string> nodeNamesByTypeIds = [];
         /// <summary>A readonly dictionary of type identifiers and names.</summary>
-        public static ReadOnlyDictionary<int, string> NodeNamesByTypeIds { get; } = nodeNamesByTypeIds.AsReadOnly();
+        public static ReadOnlyDictionary<int, string> NodeNamesByTypeIds { get; } = new(nodeNamesByTypeIds);
 
         static readonly Dictionary<string, Type> nodeTypesByStrings = [];
         /// <summary>A readonly dictionary of names and node types.</summary>
-        public static ReadOnlyDictionary<string, Type> NodeTypesByStrings { get; } = nodeTypesByStrings.AsReadOnly();
+        public static ReadOnlyDictionary<string, Type> NodeTypesByStrings { get; } = new(nodeTypesByStrings);
 
         // Tracks if class has performed static initialization.
         static bool classInitialized = false;
@@ -117,7 +117,7 @@ namespace JsepSharp
         static Dictionary<string, double> unaryOps = new(unaryOpsDefault);
         /// <summary>A readonly dictionary of unary operators. The value portion is currently ignored, since these do not have precedence.</summary>
         /// <remarks>Kept unused value portion to retain similarity with the JavaScript version.</remarks>
-        public static ReadOnlyDictionary<string, double> UnaryOps { get; } = unaryOps.AsReadOnly();
+        public static ReadOnlyDictionary<string, double> UnaryOps { get; } = new(unaryOps);
 
         // Port: static binary_ops
         // See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#table]
@@ -135,7 +135,7 @@ namespace JsepSharp
         /// <summary>
         /// A readonly dictionary of binary operators. The keys are the operators and the values are the operator precedence.
         /// </summary>
-        public static ReadOnlyDictionary<string, double> BinaryOps { get; } = binaryOps.AsReadOnly();
+        public static ReadOnlyDictionary<string, double> BinaryOps { get; } = new(binaryOps);
 
         // Port: plugins.js
         readonly Dictionary<Type, Plugin> plugins = [];
@@ -150,7 +150,11 @@ namespace JsepSharp
         /// <summary>
         /// A readonly set of right-associative operators.
         /// </summary>
+#if NET8_0_OR_GREATER
         public static IReadOnlySet<string> RightAssociative { get; } = rightAssociative;
+#else
+        public static ISet<string> RightAssociative { get; } = rightAssociative;
+#endif
 
         // Port: static additional_identifier_chars
         static readonly HashSet<char> additionalIdentifiersDefault = ['$', '_'];
@@ -158,7 +162,11 @@ namespace JsepSharp
         /// <summary>
         /// A readonly set of additional identifier characters.
         /// </summary>
+#if NET8_0_OR_GREATER
         public static IReadOnlySet<char> AdditionalIdentifiers { get; } = additionalIdentifiers;
+#else
+        public static ISet<char> AdditionalIdentifiers { get; } = additionalIdentifiers;
+#endif
 
         // Port: static literals
         static readonly Dictionary<string, object?> literalsDefault = new()
@@ -171,7 +179,7 @@ namespace JsepSharp
         /// <summary>
         /// A readonly dictionary of literals. The keys are the keywords and the values are the translation.
         /// </summary>
-        public static ReadOnlyDictionary<string, object?> Literals { get; } = literals.AsReadOnly();
+        public static ReadOnlyDictionary<string, object?> Literals { get; } = new(literals);
 
         // Port: this_str
         /// <summary>
@@ -262,9 +270,7 @@ namespace JsepSharp
         }
 
         // Creates plugin instance using supplied type.
-        Plugin CreatePlugin(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-            Type pluginType)
+        Plugin CreatePlugin(Type pluginType)
         {
             return Activator.CreateInstance(pluginType, this) as Plugin ??
                 throw new ArgumentException($"Activator.CreateInstance() for {pluginType} returned null!", nameof(pluginType));
@@ -551,6 +557,51 @@ namespace JsepSharp
             return binaryOps.GetValueOrDefault(@operator, 0);
         }
 
+        static bool IsCharBetween(char ch, char minInclusive, char maxInclusive)
+        {
+            return (uint)(ch - minInclusive) <= (uint)(maxInclusive - minInclusive);
+        }
+
+        /// <summary>
+        /// Checks if character is an ASCII digit.
+        /// </summary>
+        /// <remarks>
+        /// Use <c>char.IsAsciiDigit()</c> for newer targets.
+        /// </remarks>
+        /// <param name="ch">Character to check.</param>
+        /// <returns>True if criteria met; otherwise, false.</returns>
+        public static bool IsCharAsciiDigit(char ch)
+        {
+            
+            return IsCharBetween(ch, '0', '9');
+        }
+
+        /// <summary>
+        /// Checks if character is an ASCII letter.
+        /// </summary>
+        /// <remarks>
+        /// Use <c>char.IsAsciiLetter()</c> for newer targets.
+        /// </remarks>
+        /// <param name="ch">Character to check.</param>
+        /// <returns>True if criteria met; otherwise, false.</returns>
+        public static bool IsCharAsciiLetter(char ch)
+        {
+            return ((uint)((ch | 0x20) - 'a') <= 'z' - 'a');
+        }
+
+        /// <summary>
+        /// Checks if character is an ASCII letter or digit.
+        /// </summary>
+        /// <remarks>
+        /// Use <c>char.IsAsciiLetterOrDigit()</c> for newer targets.
+        /// </remarks>
+        /// <param name="ch">Character to check.</param>
+        /// <returns>True if criteria met; otherwise, false.</returns>
+        public static bool IsCharAsciiLetterOrDigit(char ch)
+        {
+            return IsCharAsciiLetter(ch) | IsCharAsciiDigit(ch);
+        }
+
         /// <summary>
         /// Gets whether or not character is the start of an identifier. 
         /// </summary>
@@ -558,7 +609,11 @@ namespace JsepSharp
         /// <returns>True if character can be used to start an identififer.</returns>
         public static bool IsIdentifierStart(char ch)
         {
+#if NET8_0_OR_GREATER
             if (char.IsAsciiLetter(ch)) return true;
+#else
+            if (IsCharAsciiLetter(ch)) return true;
+#endif
 
             string chs = ch.ToString();
             if (ch > 128 && !binaryOps.ContainsKey(chs)) return true;
@@ -573,7 +628,11 @@ namespace JsepSharp
         /// <returns>True if a valid part of an identifier.</returns>
         public static bool IsIdentifierPart(char ch)
         {
+#if NET8_0_OR_GREATER
             return char.IsAsciiDigit(ch) || IsIdentifierStart(ch);
+#else
+            return IsCharAsciiDigit(ch) || IsIdentifierStart(ch);
+#endif
         }
 
         /// <summary>
@@ -964,7 +1023,12 @@ namespace JsepSharp
 
             ch = CharCode;
 
-            if (char.IsAsciiDigit(ch) || ch == PERIOD_CODE)
+#if NET8_0_OR_GREATER
+            bool isNumLiteral = char.IsAsciiDigit(ch) || ch == PERIOD_CODE;
+#else
+            bool isNumLiteral = IsCharAsciiDigit(ch) || ch == PERIOD_CODE;
+#endif
+            if (isNumLiteral)
             {
                 // Periods/dots ('.') can start off a numeric literal
                 return GobbleNumericLiteral();
@@ -1125,10 +1189,17 @@ namespace JsepSharp
         /// <param name="sb">The string builder to populate.</param>
         public void ReadDigitsToBuilder(StringBuilder sb)
         {
+#if NET8_0_OR_GREATER
             while (char.IsAsciiDigit(CharCode)) // exponent itself
             {
                 sb.Append(Expression.CharAt(Index++));
             }
+#else
+            while (IsCharAsciiDigit(CharCode)) // exponent itself
+            {
+                sb.Append(Expression.CharAt(Index++));
+            }
+#endif
         }
 
         /// <summary>
@@ -1178,7 +1249,12 @@ namespace JsepSharp
                 // exponent itself
                 digitBuilder(number);
 
-                if (!char.IsAsciiDigit(Expression.CharAt(Index - 1)))
+#if NET8_0_OR_GREATER
+                bool noExpectedExpo = !char.IsAsciiDigit(Expression.CharAt(Index - 1));
+#else
+                bool noExpectedExpo = !IsCharAsciiDigit(Expression.CharAt(Index - 1));
+#endif
+                if (noExpectedExpo)
                 {
                     throw Error($"Expected exponent ({number}{CharCode})");
                 }

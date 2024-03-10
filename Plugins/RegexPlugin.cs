@@ -44,8 +44,13 @@ namespace JsepSharp.Plugins
                     while (++Parser.Index < Parser.Expression.Length)
                     {
                         var ch = Parser.CharCode;
+#if NET8_0_OR_GREATER
+                        var letterOrDigit = char.IsAsciiLetterOrDigit(ch);
+#else
+                        var letterOrDigit = Jsep.IsCharAsciiLetterOrDigit(ch);
+#endif
 
-                        if (char.IsAsciiLetterOrDigit(ch))
+                        if (letterOrDigit)
                         {
                             // Cannot have duplicate or unknown flags.
                             // Port: JavaScript version of this plugin does not validate these behaviors.

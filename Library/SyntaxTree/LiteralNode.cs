@@ -1,5 +1,4 @@
-﻿using JsepSharp.Json;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -45,12 +44,22 @@ namespace JsepSharp.SyntaxTree
             Type? nt = Nullable.GetUnderlyingType(vt);
             Type et = nt ?? vt;
 
-            if (et == typeof(int) || et == typeof(uint) ||
+#if NET8_0_OR_GREATER
+            bool isNumber = et == typeof(int) || et == typeof(uint) ||
                 et == typeof(long) || et == typeof(ulong) ||
                 et == typeof(decimal) || et == typeof(float) ||
                 et == typeof(short) || et == typeof(ushort) ||
                 et == typeof(byte) || et == typeof(sbyte) ||
-                et == typeof(Int128) || et == typeof(UInt128))
+                et == typeof(Int128) || et == typeof(UInt128);
+#else
+            bool isNumber = et == typeof(int) || et == typeof(uint) ||
+                et == typeof(long) || et == typeof(ulong) ||
+                et == typeof(decimal) || et == typeof(float) ||
+                et == typeof(short) || et == typeof(ushort) ||
+                et == typeof(byte) || et == typeof(sbyte);
+#endif
+
+            if (isNumber)
             {
                 return Convert.ToDouble(v);
             }

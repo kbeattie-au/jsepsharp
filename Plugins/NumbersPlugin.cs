@@ -15,7 +15,15 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "Numbers";
 
+#if NET8_0_OR_GREATER
         record RangePair(char Min, char Max);
+#else
+        struct RangePair(char min, char max)
+        {
+            public char Min = min;
+            public char Max = max;
+        }
+#endif
 
         /// <inheritdoc />
         public NumbersPlugin(Jsep parser) : base(parser)
@@ -39,7 +47,13 @@ namespace JsepSharp.Plugins
 
             while (true)
             {
-                if (char.IsAsciiDigit(ch))
+#if NET8_0_OR_GREATER
+                var isDigit = char.IsAsciiDigit(ch);
+#else
+                var isDigit = Jsep.IsCharAsciiDigit(ch);
+#endif
+
+                if (isDigit)
                 {
                     number.Append(ch);
                 }
@@ -139,7 +153,7 @@ namespace JsepSharp.Plugins
                 ch = Parser.CharCode;
                 if (Jsep.IsIdentifierPart(ch))
                 {
-                    if (char.IsAsciiDigit(ch) && char.IsAsciiDigit(numType))
+                    if (Jsep.IsCharAsciiDigit(ch) && Jsep.IsCharAsciiDigit(numType))
                     {
                         // abort octal processing and reset to ignore the leading 0
                         Parser.Index = startIndex + 1;
@@ -162,7 +176,7 @@ namespace JsepSharp.Plugins
 
                 return new LiteralNode(val, Parser.Expression.FromTo(startIndex, Parser.Index));
             }
-            else if (char.IsAsciiDigit(ch) || ch == Jsep.PERIOD_CODE)
+            else if (Jsep.IsCharAsciiDigit(ch) || ch == Jsep.PERIOD_CODE)
             {
                 return Parser.GobbleNumericLiteral(ReadDigitsToBuilderIgnoreUnderscore);
             }

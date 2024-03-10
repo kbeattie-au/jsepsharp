@@ -107,8 +107,8 @@
             </div>
 
             <div class="card p-1 mt-1">
-                <div class="@(outputError ? "card-body invalid" : "card-body")">
-                    <code class="@(outputError ? "text-danger" : "")" style="font-size: 90%; white-space: pre-wrap">@outputText</code>
+                <div class="@(parserError ? "card-body invalid" : "card-body")">
+                    <code class="@(parserError ? "text-danger" : "")" style="font-size: 90%; white-space: pre-wrap">@outputText</code>
                 </div>
             </div>
         </div>
@@ -149,7 +149,7 @@
     string code = "";
     string outputText = DEFAULT_OUTPUT_MESSAGE;
     bool autoIndent = true;
-    bool outputError = false;
+    bool parserError = false;
     List<SelectablePlugin> pluginList = BuiltIns.All.Select(k => new SelectablePlugin(k)).ToList();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -181,6 +181,8 @@
 
     void BuildOutput()
     {
+        if (parserError) return;
+
         try
         {
             if (ast is null)
@@ -207,7 +209,6 @@
         }
         catch (Exception ex)
         {
-            outputError = true;
             outputText = $"Output Error. {ex.GetType().Name} Thrown: {ex.Message}";
         }
     }
@@ -219,19 +220,19 @@
             var pluginsSelected = pluginList.Where(pl => pl.IsSelected).Select(pl => pl.PluginType);
 
             ast = Jsep.Parse(code, pluginsSelected);
-            outputError = false;
+            parserError = false;
+
+            BuildOutput();
         }
         catch (ParsingException ex)
         {
-            outputError = true;
+            parserError = true;
             outputText = ex.Message;
         }
         catch (Exception ex)
         {
-            outputError = true;
+            parserError = true;
             outputText = $"Parsing Error. {ex.GetType().Name} Thrown: {ex.Message}";
         }
-
-        BuildOutput();
     }
 }

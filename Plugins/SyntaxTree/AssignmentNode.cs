@@ -1,5 +1,5 @@
 ﻿using JsepSharp.SyntaxTree;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
 {

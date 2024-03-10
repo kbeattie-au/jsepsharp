@@ -13,7 +13,7 @@ namespace JsepSharp.Extensions
                 throw new ArgumentNullException(nameof(dictionary));
             }
 
-            if (!dictionary.ContainsKey(key))
+            if (dictionary.ContainsKey(key))
             {
                 return dictionary[key];
             }

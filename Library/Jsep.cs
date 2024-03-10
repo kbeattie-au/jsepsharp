@@ -933,7 +933,11 @@ namespace JsepSharp
                 }
 
                 // Enforce order of operations based on operator precedence.
+#if NET48_OR_GREATER
+                while ((stack.Count > 2) && comparePrev((BinaryOpInfo)stack[stack.Count - 2]))
+#else
                 while ((stack.Count > 2) && comparePrev((BinaryOpInfo)stack[^2]))
+#endif
                 {
                     right = stack.Pop();
                     biop = stack.PopAndCast<SyntaxNode, BinaryOpInfo>()!.Value;

@@ -18,7 +18,7 @@ A minimal example interpreter may be written in the future (likely in a separate
 
 **A NuGet package does not yet exist.**
 
-When it does, see the package details for the minimum supported .NET Framework and .NET Core versions. They are expected to be less strict than the build prerequisites below.
+Support is planned for .NET Framework 4.8 and .NET Standard 2.1.
 
 ### Build
 
@@ -34,8 +34,6 @@ You'll need to make sure you have the .NET Core 8.x (or newer) SDK installed, or
 
 * C#: 12.x.
 * .NET Core SDK: 8.x
-
-Older versions of both may work with (or without) some code adjustments, but have not been tested.
 
 ### Testing
 

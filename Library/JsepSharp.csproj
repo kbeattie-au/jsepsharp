@@ -1,11 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0; net48; netstandard2.1</TargetFrameworks>
+	<PackageId>JsepSharp</PackageId>
+	<Version>1.3.8.0</Version>
+	<Authors>JsepSharp Contributors</Authors>
+    <TargetFrameworks>net8.0; net47; netstandard2.1</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>JsepSharp</Title>
-    <Description>A .NET implementation of the Jsep JavaScript Expression Parser. Designed to parse value expressions, like those written in individual spreadsheet cells, and not operations.</Description>
+    <Description>A .NET implementation of the Jsep JavaScript Expression Parser. Designed to parse value expressions, like those written in individual spreadsheet cells or report fields. Not a full JavaScript parser.</Description>
+	<Deterministic>true</Deterministic>
     <RepositoryType>git</RepositoryType>
 	<DebugType>portable</DebugType>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -15,6 +19,13 @@
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	<AnalysisLevel>latest</AnalysisLevel>
 	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>https://kbeattie-au.github.io/jsepsharp/</PackageProjectUrl>
+	<Copyright>© JsepSharp Contributors 2024</Copyright>
+	<RepositoryUrl>https://github.com/kbeattie-au/jsepsharp</RepositoryUrl>
+	<PackageTags>jsep; jsepsharp; javascript; parser; ast</PackageTags>
+	<PackageReadmeFile>JsepSharp.README.md</PackageReadmeFile>
+	<PackageOutputPath>..\Nuget</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,6 +35,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <IsAotCompatible>False</IsAotCompatible>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Nuget\JsepSharp.README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />

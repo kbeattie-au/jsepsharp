@@ -1,8 +1,8 @@
 ## [JsepSharp](https://kbeattie-au.github.io/jsepsharp/): Tiny JavaScript Expression Parser Implementation for .NET
 
-This is a C# .NET Core conversion of the [jsep](https://ericsmekens.github.io/jsep/) project, which is a simple expression parser written in JavaScript. 
-
 This library is designed to parse expressions but not operations. The difference between expressions and operations is akin to the difference between a cell in an Excel spreadsheet vs. a proper JavaScript program. In other words, there is no support for constructs like `if`, `while`, `try`, `function`, `class`, etc.
+
+This is a C# .NET Core conversion of the [jsep](https://ericsmekens.github.io/jsep/) project, which is a simple expression parser written in JavaScript.
 
 ### Why a C# Version?
 
@@ -18,7 +18,7 @@ A minimal example interpreter may be written in the future (likely in a separate
 
 **A NuGet package does not yet exist.**
 
-Support is planned for .NET Framework 4.8 and .NET Standard 2.1.
+Support is planned for .NET Framework 4.7 and .NET Standard 2.1.
 
 ### Build
 
@@ -30,10 +30,11 @@ dotnet build
 
 You'll need to make sure you have the .NET Core 8.x (or newer) SDK installed, or the command will not work.
 
-#### Build Prerequisites
+#### Build Target Prerequisites
 
-* C#: 12.x.
-* .NET Core SDK: 8.x
+* C#: 12.0
+* .NET Core SDK: 8.0
+* .NET Framework 4.7
 
 ### Testing
 
@@ -195,4 +196,4 @@ JsepSharp is a derivative work under the MIT license. See LICENSE file.
 
 ### Thanks
 
-To all the [contributors](https://github.com/EricSmekens/jsep/graphs/contributors) of the original jsep project.
+To all the contributors of the original [jsep](https://github.com/EricSmekens/jsep/) project.

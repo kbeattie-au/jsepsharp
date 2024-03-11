@@ -66,7 +66,7 @@
 
             var strLen = str.Length;
             if (start >= strLen) return "";
-#if NET48_OR_GREATER
+#if NET47_OR_GREATER
             if (start + length > strLen) return str.Substring(start);
 #else
             if (start + length > strLen) return str[start..];

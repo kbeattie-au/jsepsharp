@@ -2,7 +2,7 @@
 
 namespace JsepSharp.Extensions
 {
-#if NET48_OR_GREATER
+#if NET47_OR_GREATER
     // .NET Framework doesn't have these methods built-in.
     internal static class DictionaryExtensions
     {

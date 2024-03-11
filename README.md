@@ -14,11 +14,10 @@ This library just just a parser. It does not attempt to execute or compile the p
 
 A minimal example interpreter may be written in the future (likely in a separate repository), if there is a demand for one.
 
-### NuGet Package
+### NuGet Packages
 
-**A NuGet package does not yet exist.**
-
-Support is planned for .NET Framework 4.7 and .NET Standard 2.1.
+* [JsepSharp](https://www.nuget.org/packages/JsepSharp) - Core Parser
+* [JsepSharp.Plugins](https://www.nuget.org/packages/JsepSharp.Plugins) - Plugins (Optional)
 
 ### Build
 

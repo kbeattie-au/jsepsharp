@@ -4,7 +4,10 @@ using JsepSharp.SyntaxTree;
 namespace JsepSharp.Plugins
 {
     /// <summary>
-    /// Adds parsing support for arrow function expressions: () => x, v => v, (a, b) => v
+    /// Adds parsing support for arrow function expressions:
+    ///   <c>() => x</c>,
+    ///   <c>v => v,</c>
+    ///   <c>(a, b) => v</c>
     /// </summary>
     public class ArrowPlugin : Plugin
     {

@@ -4,7 +4,7 @@ using JsepSharp.Extensions;
 namespace JsepSharp.Plugins
 {
     /// <summary>
-    /// Adds rudimentary spread operator support (...).
+    /// Adds rudimentary spread operator support (<c>...</c>).
     /// </summary>
     public sealed class SpreadPlugin : Plugin
     {

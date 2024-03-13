@@ -1,8 +1,9 @@
 ﻿namespace JsepSharp.Extensions
 {
+
     /// <summary>
-    /// Adds Pop/Push() to lists, since Stack<T> doesn't supported indexed[] access,
-    /// which the order of operations algorithm needs. Differs from Stack<T>.Pop() in that
+    /// Adds Pop/Push() to lists, since Stack&lt;T&gt; doesn't supported indexed[] access,
+    /// which the order of operations algorithm needs. Differs from Stack&lt;Tk&gt;.Pop() in that
     /// it also doesn't throw when it's out of items (InvalidOperationException).
     /// </summary>
     public static class ListExtensions

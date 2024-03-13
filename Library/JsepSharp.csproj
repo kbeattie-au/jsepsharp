@@ -26,6 +26,7 @@
 	<PackageTags>jsep; jsepsharp; javascript; parser; ast</PackageTags>
 	<PackageReadmeFile>JsepSharp.README.md</PackageReadmeFile>
 	<PackageOutputPath>..\Nuget</PackageOutputPath>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

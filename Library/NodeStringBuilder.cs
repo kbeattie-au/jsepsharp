@@ -109,16 +109,16 @@ namespace JsepSharp
         {
             if (onlyArgument)
             {
-                if (val)
-                {
-                    Bool(true);
-                }
+                if (val) { Bool(true); }
 
                 return;
             }
 
-            Delim();
-            Bool(true);
+            if (val)
+            {
+                Delim();
+                Bool(true);
+            }
         }
 
         /// <summary>

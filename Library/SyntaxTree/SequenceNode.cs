@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JsepSharp.Extensions;
+using Newtonsoft.Json;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -11,16 +12,27 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "SequenceExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(SequenceNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a sequence node.
+        /// </summary>
         public SequenceNode() : base()
         {
             Expressions = [];
         }
 
+        /// <summary>
+        /// Initialize a sequence node with parameters.
+        /// </summary>
+        /// <param name="expressions">Nodes within the sequence.</param>
         public SequenceNode(List<SyntaxNode?> expressions) : base()
         {
             Expressions = expressions;
@@ -38,6 +50,12 @@ namespace JsepSharp.SyntaxTree
         /// Zero or more nodes that make up the sequence.
         /// </summary>
         public List<SyntaxNode?> Expressions { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Expressions.Compact();
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

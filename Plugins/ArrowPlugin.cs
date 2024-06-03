@@ -11,10 +11,13 @@ namespace JsepSharp.Plugins
     /// </summary>
     public class ArrowPlugin : Plugin
     {
+        /// <summary>Operator syntax.</summary>
         public const string OPERATOR = "=>";
+
         /// <inheritdoc />
         public override string Name => "Arrow";
 
+        /// <inheritdoc />
         public ArrowPlugin(Jsep parser) : base(parser)
         {
             Jsep.AddBinaryOp(OPERATOR, 0.1, true);
@@ -84,10 +87,7 @@ namespace JsepSharp.Plugins
             return null;
         }
 
-        /// <summary>
-        /// Traverse full tree, converting any sub-object nodes as needed.
-        /// </summary>
-        /// <param name="node"></param>
+        // Traverse full tree, converting any sub-object nodes as needed.
         bool UpdateBinariesToArrows(SyntaxNode? nodeToCheck, out SyntaxNode? nodeOut)
         {
             if (nodeToCheck is BinaryNode bn && bn.Operator == OPERATOR)

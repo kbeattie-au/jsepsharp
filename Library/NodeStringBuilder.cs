@@ -27,6 +27,9 @@ namespace JsepSharp
         /// </summary>
         public bool UseAutoIndent { get; set; } = false;
 
+        /// <summary>
+        /// Initializes instance and internal buffer.
+        /// </summary>
         public NodeStringBuilder()
         {
             buffer = new StringBuilder();

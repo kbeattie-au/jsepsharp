@@ -11,6 +11,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "Object";
 
+        /// <inheritdoc />
         public ObjectPlugin(Jsep parser) : base(parser)
         {
             parser.BeforeToken += Parser_BeforeToken;
@@ -28,7 +29,6 @@ namespace JsepSharp.Plugins
         /// <summary>
         /// Look for and parse object literal if it is present.
         /// </summary>
-        /// <param name="parser">Required. Parser instance.</param>
         /// <returns>A SyntaxNode instance or null if no object literal found.</returns>
         SyntaxNode? GobbleObjectExpression()
         {

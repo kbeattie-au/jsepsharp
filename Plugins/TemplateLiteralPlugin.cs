@@ -13,6 +13,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "TemplateLiteral";
 
+        /// <inheritdoc />
         public TemplateLiteralPlugin(Jsep parser) : base(parser)
         {
             parser.BeforeToken += Parser_BeforeToken;

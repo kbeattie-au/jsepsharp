@@ -8,6 +8,7 @@
     /// </remarks>
     public abstract class AstBuilder
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected static LiteralNode Lit(object? value, string raw, bool optional = false)
         {
             return new LiteralNode(value, raw, optional);
@@ -62,5 +63,6 @@
         {
             return new BinaryNode(op, left, right);
         }
+#pragma warning restore CS1591
     }
 }

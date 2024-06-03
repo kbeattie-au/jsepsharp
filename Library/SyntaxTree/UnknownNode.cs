@@ -14,8 +14,12 @@ namespace JsepSharp.SyntaxTree
     {
         internal const string TYPE_NAME = "Unknown";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(MemberNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 

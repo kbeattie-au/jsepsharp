@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JsepSharp.Extensions;
+using Newtonsoft.Json;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -11,16 +12,27 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "Compound";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(CompoundNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a compound node.
+        /// </summary>
         public CompoundNode() : base()
         {
             Body = [];
         }
 
+        /// <summary>
+        /// Initialize a call node with parameters.
+        /// </summary>
+        /// <param name="body">Nodes within the compound node.</param>
         public CompoundNode(List<SyntaxNode?> body) : base()
         {
             Body = body;
@@ -38,6 +50,12 @@ namespace JsepSharp.SyntaxTree
         /// Zero or more nodes that make up the compound.
         /// </summary>
         public List<SyntaxNode?> Body { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Body.Compact();
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

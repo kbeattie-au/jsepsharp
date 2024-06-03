@@ -10,13 +10,24 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "SpreadElement";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(SpreadNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a spread node.
+        /// </summary>
         public SpreadNode() : base() { }
 
+        /// <summary>
+        /// Initialize a spread node with parameters.
+        /// </summary>
+        /// <param name="argument">The argument for the spread operation.</param>
         public SpreadNode(SyntaxNode? argument) : base()
         {
             Argument = argument;
@@ -26,6 +37,12 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// The target of the spread.
         /// </summary>
         public SyntaxNode? Argument { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Argument is not null) { yield return Argument; }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

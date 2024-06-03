@@ -10,6 +10,7 @@ namespace JsepSharp.Plugins.SyntaxTree
     /// </remarks>
     public class AstBuilderWithPlugins : AstBuilder
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected static ArrowNode Arrow(List<SyntaxNode?> parms, SyntaxNode? body)
         {
             return new ArrowNode(parms, body);
@@ -95,4 +96,5 @@ namespace JsepSharp.Plugins.SyntaxTree
             return new TemplateElement(raw, cooked, tail);
         }
     }
+#pragma warning restore CS1591
 }

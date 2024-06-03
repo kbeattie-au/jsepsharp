@@ -9,13 +9,26 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "MemberExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(MemberNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a member access node.
+        /// </summary>
         public MemberNode() : base() { }
 
+        /// <summary>
+        /// Initialize a member access node with parameters.
+        /// </summary>
+        /// <param name="computed">Whether or not brackets were used to access the member.</param>
+        /// <param name="object">The node representing the object containing the member.</param>
+        /// <param name="property">The node representing the member on the object being accessed.</param>
         public MemberNode(bool computed, SyntaxNode? @object, SyntaxNode? property) : base()
         {
             Computed = computed;
@@ -23,6 +36,13 @@ namespace JsepSharp.SyntaxTree
             Property = property;
         }
 
+        /// <summary>
+        /// Initialize a member access node with parameters.
+        /// </summary>
+        /// <param name="computed">Whether or not brackets were used to access the member.</param>
+        /// <param name="object">The node representing the object containing the member.</param>
+        /// <param name="property">The node representing the member on the object being accessed.</param>
+        /// <param name="optional">Whether or not an optional indicator (?) was supplied.</param>
         public MemberNode(bool computed, SyntaxNode? @object, SyntaxNode? property, bool optional) :
             this(computed, @object, property)
         {
@@ -57,9 +77,20 @@ namespace JsepSharp.SyntaxTree
         /// </summary>
         public SyntaxNode? Property { get; set; }
 
+        /// <summary>
+        /// Whether computed should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializeComputed()
         {
             return Computed;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Object is not null) { yield return Object; }
+            if (Property is not null) { yield return Property; }
         }
 
         /// <inheritdoc />

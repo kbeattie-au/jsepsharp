@@ -10,13 +10,26 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "ConditionalExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(TernaryNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a ternary/conditional node.
+        /// </summary>
         public TernaryNode() : base() { }
 
+        /// <summary>
+        /// Initialize a ternary/conditional node with parameters.
+        /// </summary>
+        /// <param name="test">Test clause node.</param>
+        /// <param name="consequent">Node to use when test clause criteria is met.</param>
+        /// <param name="alternate">Node to use when test clause criteria is not met.</param>
         public TernaryNode(SyntaxNode? test, SyntaxNode? consequent, SyntaxNode? alternate) : base()
         {
             Test = test;
@@ -24,9 +37,28 @@ namespace JsepSharp.Plugins.SyntaxTree
             Alternate = alternate;
         }
 
+        /// <summary>
+        /// Test criteria.
+        /// </summary>
         public SyntaxNode? Test { get; set; }
+
+        /// <summary>
+        /// If test criteria is true.
+        /// </summary>
         public SyntaxNode? Consequent { get; set; }
+
+        /// <summary>
+        /// If test criteria is false.
+        /// </summary>
         public SyntaxNode? Alternate { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Test is not null) { yield return Test; }
+            if (Consequent is not null) { yield return Consequent; }
+            if (Alternate is not null) { yield return Alternate; }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

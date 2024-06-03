@@ -9,13 +9,26 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "UnaryExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(UnaryNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a unary operator node.
+        /// </summary>
         public UnaryNode() : base() { }
 
+        /// <summary>
+        /// Initialize a unary operator node with parameters.
+        /// </summary>
+        /// <param name="operator">Operator name.</param>
+        /// <param name="argument">Node the operator applies to.</param>
+        /// <param name="prefix">Whether operator is prefix or postfix.</param>
         public UnaryNode(string? @operator, SyntaxNode? argument, bool prefix) : base()
         {
             Operator = @operator;
@@ -48,9 +61,19 @@ namespace JsepSharp.SyntaxTree
             sb.End();
         }
 
+        /// <summary>
+        /// Whether prefix should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializePrefix()
         {
             return Prefix;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Argument is not null) yield return Argument;
         }
 
         /// <inheritdoc />

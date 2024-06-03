@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using JsepSharp.Extensions;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -9,17 +9,31 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "ArrayExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(ArrayNode), TYPE_NAME);
 
+        /// <inheritdoc />
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// The elements of the array.
+        /// </summary>
         public List<SyntaxNode?> Elements { get; set; }
 
+        /// <summary>
+        /// Initializes an instance with an empty element list. 
+        /// </summary>
         public ArrayNode() : base()
         {
             Elements = [];
         }
 
+        /// <summary>
+        /// Initializes an instance with an explicit element list.
+        /// </summary>
+        /// <param name="elements">Entries of the array.</param>
         public ArrayNode(List<SyntaxNode?> elements) : base()
         {
             Elements = elements;
@@ -31,6 +45,12 @@ namespace JsepSharp.SyntaxTree
             sb.Start("Ar");
             sb.NodeSequence(Elements);
             sb.End();
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Elements.Compact();
         }
 
         /// <inheritdoc />

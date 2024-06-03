@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -9,13 +10,26 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "BinaryExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(BinaryNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a binary (infix) operator node.
+        /// </summary>
         public BinaryNode() : base() { }
 
+        /// <summary>
+        /// Initialize a binary (infix) operator node with parameters.
+        /// </summary>
+        /// <param name="operator">Operator name.</param>
+        /// <param name="left">Left-side argument.</param>
+        /// <param name="right">Right-side arument.</param>
         public BinaryNode(string? @operator, SyntaxNode? left, SyntaxNode? right) : base()
         {
             Operator = @operator;
@@ -46,6 +60,13 @@ namespace JsepSharp.SyntaxTree
             sb.Delim();
             sb.Node(Right);
             sb.End();
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Left is not null) { yield return Left; }
+            if (Right is not null) { yield return Right; }
         }
 
         /// <inheritdoc />

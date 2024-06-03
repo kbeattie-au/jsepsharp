@@ -10,13 +10,27 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "Property";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(ObjectProperty), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an object property node.
+        /// </summary>
         public ObjectProperty() : base() { }
 
+        /// <summary>
+        /// Initialize an object property node with parameters.
+        /// </summary>
+        /// <param name="computed">Whether or not brackets were used to access the member.</param>
+        /// <param name="key">Property key.</param>
+        /// <param name="value">Property value.</param>
+        /// <param name="shorthand">Whether this represents a shorthand.</param>
         public ObjectProperty(bool computed, SyntaxNode? key, SyntaxNode? value, bool shorthand)
         {
             Computed = computed;
@@ -45,14 +59,29 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// </summary>
         public bool Shorthand { get; set; }
 
+        /// <summary>
+        /// Whether computed should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializeComputed()
         {
             return Computed;
         }
 
+        /// <summary>
+        /// Whether shorthand should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializeShorthand()
         {
             return Shorthand;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Key is not null) { yield return Key; }
+            if (Value is not null) { yield return Value; }
         }
 
         /// <inheritdoc />

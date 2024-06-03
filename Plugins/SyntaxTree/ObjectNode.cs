@@ -1,4 +1,5 @@
-﻿using JsepSharp.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
@@ -10,16 +11,27 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "ObjectExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(ObjectNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an object node.
+        /// </summary>
         public ObjectNode() : base()
         {
             Properties = [];
         }
 
+        /// <summary>
+        /// Initialize an object node with properties.
+        /// </summary>
+        /// <param name="properties">Nodes representing properties on the node.</param>
         public ObjectNode(List<SyntaxNode?> properties) : base()
         {
             Properties = properties;
@@ -29,6 +41,12 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// List of properties for the object.
         /// </summary>
         public List<SyntaxNode?> Properties { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Properties.Compact();
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

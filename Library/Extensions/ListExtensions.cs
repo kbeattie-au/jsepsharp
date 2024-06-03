@@ -51,5 +51,22 @@
             list.RemoveAt(idx);
             return entry;
         }
+
+        /// <summary>
+        /// Removes null entries from the list.
+        /// </summary>
+        /// <typeparam name="T">Type of entries.</typeparam>
+        /// <param name="list">Required. List instance.</param>
+        /// <returns>A list with any null entries removed.</returns>
+        public static IEnumerable<T> Compact<T>(this List<T?> list)
+        {
+            foreach (var t in list)
+            {
+                if (t is not null)
+                {
+                    yield return t;
+                }
+            }
+        }
     }
 }

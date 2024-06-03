@@ -1,4 +1,5 @@
-﻿using JsepSharp.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
@@ -17,17 +18,29 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "TemplateLiteral";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(TemplateLiteralNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a template literal node.
+        /// </summary>
         public TemplateLiteralNode() : base()
         {
             Quasis = [];
             Expressions = [];
         }
 
+        /// <summary>
+        /// Initialize a template literal node with parameters.
+        /// </summary>
+        /// <param name="quasis">Nodes representing the constant portions of the literal.</param>
+        /// <param name="expressions">Nodes representing the expressions within the literal.</param>
         public TemplateLiteralNode(List<TemplateElement?> quasis, List<SyntaxNode?> expressions) : base()
         {
             Quasis = quasis;
@@ -43,6 +56,20 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// These represent the interpolated parts of the literal.
         /// </summary>
         public List<SyntaxNode?> Expressions { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            foreach (var q in Quasis.Compact())
+            {
+                yield return q;
+            }
+
+            foreach (var e in Expressions.Compact())
+            {
+                yield return e;
+            }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

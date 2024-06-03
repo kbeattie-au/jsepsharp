@@ -70,7 +70,7 @@ namespace JsepSharp.Plugins
         /// <summary>
         /// Determines if another regular expression literal has the same pattern and flags.
         /// </summary>
-        /// <param name="node">The literal to compare with this one.</param>
+        /// <param name="lit">The literal to compare with this one.</param>
         /// <returns><c>true</c> if the specified instance is equal to the current one; else <c>false</c>.</returns>
         public bool Equals(RegexLiteral lit)
         {

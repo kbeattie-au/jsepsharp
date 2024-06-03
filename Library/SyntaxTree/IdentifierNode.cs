@@ -9,18 +9,34 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "Identifier";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(IdentifierNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an identiifer node.
+        /// </summary>
         public IdentifierNode() : base() { }
 
+        /// <summary>
+        /// Initialize an identifier node with parameters.
+        /// </summary>
+        /// <param name="name">Identifier name.</param>
         public IdentifierNode(string? name) : base()
         {
             Name = name;
         }
 
+        /// <summary>
+        /// Initialize an identifier node with parameters.
+        /// </summary>
+        /// <param name="name">Identifier name.</param>
+        /// <param name="optional">Whether or not an optional indicator (?) was supplied.</param>
         public IdentifierNode(string? name, bool optional) : this(name)
         {
             Optional = optional;

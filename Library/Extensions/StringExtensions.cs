@@ -47,7 +47,11 @@
         {
             if (str is null || start < 0 || start >= str.Length) return "";
 
-            return str;
+#if NET47_OR_GREATER
+            return str.Substring(start);
+#else
+            return str[start..];
+#endif
         }
 
         /// <summary>

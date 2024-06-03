@@ -31,6 +31,8 @@ namespace JsepSharp.Plugins
 
         // Ternary needs to be included before this plugin, or it doesn't work properly with it.
         readonly static Type[] dependents = [typeof(TernaryPlugin)];
+
+        /// <inheritdoc />
         public override IEnumerable<Type> DependentPlugins { get => dependents; }
 
         /// <inheritdoc />
@@ -106,10 +108,7 @@ namespace JsepSharp.Plugins
             }
         }
 
-        /// <summary>
-        /// Traverse full tree, converting any sub-object nodes as needed.
-        /// </summary>
-        /// <param name="node"></param>
+        // Traverse tree, converting any sub-object nodes as needed.
         bool UpdateBinariesToAssignments(SyntaxNode? nodeToCheck, out SyntaxNode? nodeOut)
         {
             if (nodeToCheck is BinaryNode bn)

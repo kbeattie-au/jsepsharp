@@ -1,4 +1,5 @@
-﻿using JsepSharp.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
@@ -10,27 +11,49 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "ArrowFunctionExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(ArrowNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a arrow method node.
+        /// </summary>
         public ArrowNode() : base()
         {
             Params = [];
         }
 
+        /// <summary>
+        /// Initialize a arrow method node with parameters.
+        /// </summary>
+        /// <param name="body">Node representing the expression within the arrow method.</param>
         public ArrowNode(SyntaxNode? body) : this()
         {
             Body = body;
         }
 
+        /// <summary>
+        /// Initialize a arrow method node with parameters.
+        /// </summary>
+        /// <param name="params">Nodes representing arguments to the arrow method.</param>
+        /// <param name="body">Node representing the expression within the arrow method.</param>
         public ArrowNode(List<SyntaxNode?> @params, SyntaxNode? body) : base()
         {
             Params = @params;
             Body = body;
         }
 
+        /// <summary>
+        /// Initialize a arrow method node with parameters.
+        /// </summary>
+        /// <param name="params">Nodes representing arguments to the arrow method.</param>
+        /// <param name="body">Node representing the expression within the arrow method.</param>
+        /// <param name="async">Indicates whether the arrow method is async.</param>
         public ArrowNode(List<SyntaxNode?> @params, SyntaxNode? body, bool @async) : this(@params, body)
         {
             Async = @async;
@@ -54,9 +77,24 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// </remarks>
         public bool Async { get; set; }
 
+        /// <summary>
+        /// Whether async should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializeAsync()
         {
             return Async;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Body is not null) yield return Body;
+
+            foreach (var a in Params.Compact())
+            {
+                yield return a;
+            }
         }
 
         /// <inheritdoc />

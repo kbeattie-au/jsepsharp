@@ -9,13 +9,24 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "ThisExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(ThisNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a this node.
+        /// </summary>
         public ThisNode() : base() { }
 
+        /// <summary>
+        /// Initialize a this node with parameters.
+        /// </summary>
+        /// <param name="optional">Whether or not an optional indicator (?) was supplied.</param>
         public ThisNode(bool optional) : this()
         {
             Optional = optional;
@@ -42,7 +53,7 @@ namespace JsepSharp.SyntaxTree
         /// <param name="node">The node to compare with the current one.</param>
         /// <returns>Always <c>true</c>.</returns>
         public bool Equals(ThisNode node)
-#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore CA1822
         {
             return true;
         }

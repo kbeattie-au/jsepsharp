@@ -6,17 +6,33 @@ namespace JsepSharp.Plugins.SyntaxTree
     /// <summary>
     /// Represents an update expression.
     /// </summary>
+    /// <remarks>
+    /// This exists primarily for <c>a++</c> and <c>--a</c> unary postfix/prefix increment/decrement operations.
+    /// </remarks>
     public sealed class UpdateNode : SyntaxNode, IHasOperator
     {
         const string TYPE_NAME = "UpdateExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(UpdateNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an update node.
+        /// </summary>
         public UpdateNode() : base() { }
 
+        /// <summary>
+        /// Initialize an update node with parameters.
+        /// </summary>
+        /// <param name="operator">Operator name.</param>
+        /// <param name="argument">Argument node being operated on.</param>
+        /// <param name="prefix">Whether operator is prefix or postfix.</param>
         public UpdateNode(string? @operator, SyntaxNode? argument, bool prefix) : base()
         {
             Operator = @operator;
@@ -37,9 +53,19 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// </summary>
         public bool Prefix { get; set; }
 
+        /// <summary>
+        /// Whether prefix should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializePrefix()
         {
             return Prefix;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Argument is not null) yield return Argument;
         }
 
         /// <inheritdoc />

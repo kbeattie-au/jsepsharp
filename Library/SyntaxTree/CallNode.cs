@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JsepSharp.Extensions;
+using Newtonsoft.Json;
 
 namespace JsepSharp.SyntaxTree
 {
@@ -9,22 +10,40 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "CallExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(CallNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a call node.
+        /// </summary>
         public CallNode() : base()
         {
             Arguments = [];
         }
 
+        /// <summary>
+        /// Initialize a call node with parameters.
+        /// </summary>
+        /// <param name="callee">Node representing the function to invoke.</param>
+        /// <param name="arguments">Nodes representing the arguments supplied to the function.</param>
         public CallNode(SyntaxNode? callee, List<SyntaxNode?> arguments) : base()
         {
             Callee = callee;
             Arguments = arguments;
         }
 
+        /// <summary>
+        /// Initialize a call node with parameters.
+        /// </summary>
+        /// <param name="callee">Node representing the function to invoke.</param>
+        /// <param name="arguments">Nodes representing the arguments supplied to the function.</param>
+        /// <param name="optional">Whether or not an optional indicator (?) was supplied.</param>
         public CallNode(SyntaxNode? callee, List<SyntaxNode?> arguments, bool optional) : this(callee, arguments)
         {
             Optional = optional;
@@ -50,6 +69,17 @@ namespace JsepSharp.SyntaxTree
         /// Arguments for function.
         /// </summary>
         public List<SyntaxNode?> Arguments { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Callee is not null) yield return Callee;
+
+            foreach (var a in Arguments.Compact())
+            {
+                yield return a;
+            }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

@@ -13,6 +13,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "Regex";
 
+        /// <inheritdoc />
         public RegexPlugin(Jsep parser) : base(parser)
         {
             parser.BeforeToken += Parser_BeforeToken;

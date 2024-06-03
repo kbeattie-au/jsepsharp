@@ -12,8 +12,14 @@ namespace JsepSharp.Plugins
         public override string Name => "AsyncAwait";
 
         readonly static Type[] dependents = [typeof(ArrowPlugin)];
+
+        /// <inheritdoc />
         public override IEnumerable<Type> DependentPlugins { get => dependents; }
 
+        /// <summary>
+        /// Initialize plugin with parser instance.
+        /// </summary>
+        /// <param name="parser">Parse instance.</param>
         public AsyncAwaitPlugin(Jsep parser) : base(parser)
         {
             parser.BeforeToken += Parser_BeforeToken;

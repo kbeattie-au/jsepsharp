@@ -10,6 +10,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "Comment";
 
+        /// <inheritdoc />
         public CommentPlugin(Jsep parser) : base(parser)
         {
             parser.AfterSpaces += Parser_AfterSpaces;

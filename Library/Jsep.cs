@@ -35,33 +35,59 @@ namespace JsepSharp
 
         // Kept these since it makes it easier to map to the original JavaScript source.
         // Used internally during Parse(), and exposed for plugins to easily use.
+        /// <summary>No more characters remain.</summary>
         public const char NO_MORE = '\0';
+        /// <summary>Tab character.</summary>
         public const char TAB_CODE = '\t';
+        /// <summary>Line feed character.</summary>
         public const char LF_CODE = '\n';
+        /// <summary>Carriage return character.</summary>
         public const char CR_CODE = '\r';
+        /// <summary>Space character.</summary>
         public const char SPACE_CODE = ' ';
+        /// <summary>Period character.</summary>
         public const char PERIOD_CODE = '.';
+        /// <summary>Comma character.</summary>
         public const char COMMA_CODE = ',';
+        /// <summary>Single quote character.</summary>
         public const char SQUOTE_CODE = '\'';
+        /// <summary>Double quote character.</summary>
         public const char DQUOTE_CODE = '"';
+        /// <summary>Opening paranthesis character.</summary>
         public const char OPAREN_CODE = '(';
+        /// <summary>Closing paranthesis character.</summary>
         public const char CPAREN_CODE = ')';
+        /// <summary>Opening bracket character.</summary>
         public const char OBRACK_CODE = '[';
+        /// <summary>Closing bracket character.</summary>
         public const char CBRACK_CODE = ']';
+        /// <summary>Question mark character.</summary>
         public const char QUMARK_CODE = '?';
+        /// <summary>Semicolon character.</summary>
         public const char SEMCOL_CODE = ';';
 
         // Not used in the core implementation, but by plugins. Kept for same reason.
+        /// <summary>Opening brace character.</summary>
         public const char OCURLY_CODE = '{';
+        /// <summary>Closing brace character.</summary>
         public const char CCURLY_CODE = '}';
+        /// <summary>Asterisk character.</summary>
         public const char ASTSK_CODE = '*';
+        /// <summary>At character.</summary>
         public const char AT_CODE = '@';
+        /// <summary>Backtick character.</summary>
         public const char BTICK_CODE = '`';
+        /// <summary>Backslash character.</summary>
         public const char BSLASH_CODE = '\\';
+        /// <summary>Colon character.</summary>
         public const char COLON_CODE = ':';
+        /// <summary>Dollar sign character.</summary>
         public const char DOLLAR_CODE = '$';
+        /// <summary>Foward slash (solidus) character.</summary>
         public const char FSLASH_CODE = '/';
+        /// <summary>Numeric 0 digit character.</summary>
         public const char NUM_0_CODE = '0';
+        /// <summary>Underscore character.</summary>
         public const char UNDERSCORE_CODE = '_';
 
         // Unique to C# implementation. Node identifiers/names lookups.
@@ -471,7 +497,14 @@ namespace JsepSharp
 
         #endregion
 
+        /// <summary>
+        /// The expression being parsed.
+        /// </summary>
         public string Expression { get; private set; } // Port: expr
+
+        /// <summary>
+        /// The position of the parser within the expression.
+        /// </summary>
         public int Index = 0;
 
         // Port: get char(), get code()
@@ -522,7 +555,7 @@ namespace JsepSharp
         /// Creates instance and invokes the parse() method.
         /// </remarks>
         /// <param name="expression">Expression to parse.</param>
-        /// <param name="pluginTypes">An enumerable of plugin types to use when parsing.</param>
+        /// <param name="pluginLoaders">An enumerable of plugin types to use when parsing.</param>
         /// <exception cref="ParsingException">Thrown if parsing errors occurred.</exception>
         /// <returns>A top-level node from the parsed AST.</returns>
         public static SyntaxNode Parse(string expression, IEnumerable<Type> pluginLoaders)

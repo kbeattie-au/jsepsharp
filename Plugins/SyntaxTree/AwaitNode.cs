@@ -10,13 +10,24 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "AwaitExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(AwaitNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an await node.
+        /// </summary>
         public AwaitNode() : base() { }
 
+        /// <summary>
+        /// Initialize an await node with parameters.
+        /// </summary>
+        /// <param name="argument">The node being awaited.</param>
         public AwaitNode(SyntaxNode? argument) : base()
         {
             Argument = argument;
@@ -26,6 +37,12 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// The node being awaited.
         /// </summary>
         public SyntaxNode? Argument { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Argument is not null) yield return Argument;
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

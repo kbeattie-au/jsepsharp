@@ -10,13 +10,26 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "AssignmentExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(AssignmentNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize an assignment node.
+        /// </summary>
         public AssignmentNode() : base() { }
 
+        /// <summary>
+        /// Initialize an assignment node with parameters.
+        /// </summary>
+        /// <param name="operator">Operator name.</param>
+        /// <param name="left">Left-side of the assignment.</param>
+        /// <param name="right">Right-side of the assignment.</param>
         public AssignmentNode(string? @operator, SyntaxNode? left, SyntaxNode? right) : base()
         {
             Operator = @operator;
@@ -38,6 +51,13 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// The expression to assign to the target.
         /// </summary>
         public SyntaxNode? Right { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Left is not null) { yield return Left; }
+            if (Right is not null) { yield return Right; }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

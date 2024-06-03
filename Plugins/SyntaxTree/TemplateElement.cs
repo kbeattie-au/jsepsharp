@@ -10,13 +10,26 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "TemplateElement";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(TemplateElement), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a template element node.
+        /// </summary>
         public TemplateElement() : base() { }
 
+        /// <summary>
+        /// Initialize a template element node with parameters.
+        /// </summary>
+        /// <param name="raw">The raw string.</param>
+        /// <param name="cooked">The processed string (escape characters processed).</param>
+        /// <param name="tail">Whether this is the last template element.</param>
         public TemplateElement(string? raw, string? cooked, bool tail) : base()
         {
             Raw = raw;
@@ -39,6 +52,10 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// </summary>
         public bool Tail { get; set; }
 
+        /// <summary>
+        /// Whether tail should be serialized in the output JSON.
+        /// </summary>
+        /// <returns>True if serialized; Otherwise false.</returns>
         public bool ShouldSerializeTail()
         {
             return Tail;

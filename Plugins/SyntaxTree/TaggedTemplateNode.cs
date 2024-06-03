@@ -14,13 +14,25 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "TaggedTemplateExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(TaggedTemplateNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a tagged template node.
+        /// </summary>
         public TaggedTemplateNode() : base() { }
 
+        /// <summary>
+        /// Initialize a tagged template node with parameters.
+        /// </summary>
+        /// <param name="tag">Tag node.</param>
+        /// <param name="quasi">Template literal node.</param>
         public TaggedTemplateNode(SyntaxNode? tag, TemplateLiteralNode? quasi) : base()
         {
             Tag = tag;
@@ -36,6 +48,13 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// This represents the rest of the template literal.
         /// </summary>
         public TemplateLiteralNode? Quasi { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Tag is not null) { yield return Tag; }
+            if (Quasi is not null) { yield return Quasi; }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

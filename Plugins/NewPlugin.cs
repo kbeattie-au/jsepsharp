@@ -11,6 +11,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "New";
 
+        /// <inheritdoc />
         public NewPlugin(Jsep parser) : base(parser)
         {
             Jsep.AddUnaryOp("new");

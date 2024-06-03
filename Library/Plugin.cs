@@ -7,7 +7,10 @@ namespace JsepSharp
     /// </summary>
     public abstract class Plugin
     {
-        protected Jsep Parser { get; set; }
+        /// <summary>
+        /// Parser instance supplied to the plugin on initialization.
+        /// </summary>
+        protected Jsep Parser { get; private set; }
 
         /// <summary>
         /// Name of the plugin.

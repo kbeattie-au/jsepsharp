@@ -11,6 +11,7 @@ namespace JsepSharp.Plugins
         /// <inheritdoc />
         public override string Name => "Ternary";
 
+        /// <inheritdoc />
         public TernaryPlugin(Jsep parser) : base(parser)
         {
             parser.AfterExpression += Parser_AfterExpression;

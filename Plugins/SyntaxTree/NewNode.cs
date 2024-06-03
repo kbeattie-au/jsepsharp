@@ -1,4 +1,5 @@
-﻿using JsepSharp.SyntaxTree;
+﻿using JsepSharp.Extensions;
+using JsepSharp.SyntaxTree;
 using Newtonsoft.Json;
 
 namespace JsepSharp.Plugins.SyntaxTree
@@ -10,22 +11,38 @@ namespace JsepSharp.Plugins.SyntaxTree
     {
         const string TYPE_NAME = "NewExpression";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(NewNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a new node.
+        /// </summary>
         public NewNode() : base()
         {
             Arguments = [];
         }
 
+        /// <summary>
+        /// Initialize a new node with parameters.
+        /// </summary>
+        /// <param name="callee">Node representing the constructor to invoke.</param>
+        /// <param name="arguments">Nodes representing the arguments supplied to the constructor.</param>
         public NewNode(SyntaxNode? callee, List<SyntaxNode?> arguments) : base()
         {
             Callee = callee;
             Arguments = arguments;
         }
 
+        /// <summary>
+        /// Initialize a new node from a call node.
+        /// </summary>
+        /// <param name="node">The call node to copy properties from.</param>
         public NewNode(CallNode node)
         {
             Arguments = node.Arguments;
@@ -52,6 +69,17 @@ namespace JsepSharp.Plugins.SyntaxTree
         /// Constructor arguments.
         /// </summary>
         public List<SyntaxNode?> Arguments { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            if (Callee is not null) yield return Callee;
+
+            foreach (var a in Arguments.Compact())
+            {
+                yield return a;
+            }
+        }
 
         /// <inheritdoc />
         public override void ReplaceNodes(NodeReplacer searcher)

@@ -9,19 +9,37 @@ namespace JsepSharp.SyntaxTree
     {
         const string TYPE_NAME = "Literal";
 
+        /// <summary>
+        /// Node type identifier.
+        /// </summary>
         public static readonly int NodeTypeId = Jsep.GetOrRegisterTypeIdFor(typeof(LiteralNode), TYPE_NAME);
 
+        /// <inheritdoc />
         [JsonIgnore]
         public override int TypeId => NodeTypeId;
 
+        /// <summary>
+        /// Initialize a literal node.
+        /// </summary>
         public LiteralNode() : base() { }
 
+        /// <summary>
+        /// Initialize a literal node with parameters.
+        /// </summary>
+        /// <param name="value">Parsed value.</param>
+        /// <param name="raw">Raw original string value.</param>
         public LiteralNode(object? value, string? raw) : base()
         {
             Value = value;
             Raw = raw;
         }
 
+        /// <summary>
+        /// Initialize a literal node with parameters.
+        /// </summary>
+        /// <param name="value">Parsed value.</param>
+        /// <param name="raw">Raw original string value.</param>
+        /// <param name="optional">Whether or not an optional indicator (?) was supplied.</param>
         public LiteralNode(object? value, string? raw, bool optional) : this(value, raw)
         {
             Optional = optional;

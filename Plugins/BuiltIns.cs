@@ -1,5 +1,8 @@
 ﻿namespace JsepSharp.Plugins
 {
+    /// <summary>
+    /// Built-in plugins.
+    /// </summary>
     public static class BuiltIns
     {
         // Important: The order of these matters for correct parsing behavior!
